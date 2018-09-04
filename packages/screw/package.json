@@ -1,0 +1,20 @@
+{
+  "name": "@mechanema/screw",
+  "version": "0.0.0",
+  "description": "Joins one more store slices to a component.",
+  "author": "Christopher Roussel <christopher@impleri.net>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "dist/screw.js",
+  "keywords": [
+    "redux",
+    "state",
+    "machine"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "redux": "^4.0.0"
+  }
+}

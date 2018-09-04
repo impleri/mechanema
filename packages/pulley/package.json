@@ -1,0 +1,20 @@
+{
+  "name": "@mechanema/pulley",
+  "version": "0.0.0",
+  "description": "Lift the heavy objects out of basic actions for a Redux store.",
+  "author": "Christopher Roussel <christopher@impleri.net>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "dist/pulley.js",
+  "keywords": [
+    "redux",
+    "state",
+    "machine"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "redux": "^4.0.0"
+  }
+}
