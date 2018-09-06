@@ -1,4 +1,4 @@
-# Machanema
+# Mechanema
 
 "Give me a place to stand on, and I will move the Earth." -- Archimedes
 
