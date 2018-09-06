@@ -2,7 +2,7 @@
 
 "Give me a place to stand on, and I will move the Earth." -- Archimedes
 
-Machanema are (simple) machines. In ancient Greece, it was believed that there
+Mechanema are (simple) machines. In ancient Greece, it was believed that there
 were just a few simple machines. Heron of Alexandria in his _Mechanics_ listed
 them as: lever, windlass, pulley, wedge, and screw. With just these five machines,
 one could in theory set any object into motion. During the Renaissance, these simple
