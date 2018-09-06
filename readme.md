@@ -14,9 +14,4 @@ progress. These libraries correlate to the "simple machines" of classical
 mechanics. Each provides a way to reduce boilerplate and help you focus on making a
 React/Redux application.
 
-Lever - CLI
-Pulley - Epics
-Screw - Selectors
-Wedge - Reducers
-
 While it's not required, these tools were built to work in a [ducks](https://github.com/erikras/ducks-modular-redux) (or [re-ducks](https://github.com/alexnm/re-ducks)) layout.
