@@ -1,3 +1,3 @@
 export * from './aggregator';
 export * from './reducer-slice';
-export * from './state-machine';
+export { createStateMachine } from './state-machine';

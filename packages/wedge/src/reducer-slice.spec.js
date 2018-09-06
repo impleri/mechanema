@@ -1,5 +1,6 @@
 import faker from 'faker';
 import { Map } from 'immutable';
+
 import createReducerFactory, { createReducer } from './reducer-slice';
 
 describe('reducer slice functions', () => {

@@ -3,7 +3,7 @@ import {
   INIT,
   KEY_STATE,
   reducerFactory,
-  registerStateMachine,
+  createStateMachine,
 } from '../dist';
 
 // First define (or import) some action and state constants
@@ -64,7 +64,7 @@ const clearFinished = createReducer(
 // Two things happen here:
 // 1. A reducer is created to respond based on the state of the machine
 // 2. That reducer is added to an internal registry
-export default registerStateMachine({
+export default createStateMachine({
   [INIT]: [addTodo],
   [STATE_READY]: [addTodo, toggleTodo],
   [STATE_COMPLETED]: [addTodo, toggleTodo, clearFinished],
