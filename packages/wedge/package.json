@@ -12,11 +12,17 @@
     "machine"
   ],
   "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
     "test": "jest"
   },
   "peerDependencies": {
     "immutable": "^4.0.0-rc.1",
     "redux": "^4.0.0",
     "redux-immutable": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "jest": "^23.6.0"
   }
 }

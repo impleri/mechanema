@@ -1,12 +1,12 @@
 import faker from 'faker';
 import { List, Map } from 'immutable';
 
-import {
+let {
   createStateMachine,
   INIT,
   KEY_STATE,
   traverseReducerArray,
-} from './state-machine';
+} = require('./state-machine');
 
 describe('state machine functions', () => {
   describe('Initial constants', () => {
@@ -84,12 +84,83 @@ describe('state machine functions', () => {
       const finalState = reducerCallback(initialState, givenAction);
       expect(finalState).toEqual(expectedState);
     });
-
   });
 
   describe('createStateMachine', () => {
-    it('uses the default reducer method if current state is not matched', () => { });
-    it('uses the reducer method associated with the current state', () => { });
-    it('uses traverseReducerArray if reducer method is an array', () => { });
+    let testHash;
+    let givenState = Map();
+    let givenAction;
+
+    beforeEach(() => {
+      givenState = Map();
+
+      givenAction = {
+        type: faker.random.word(),
+      };
+
+      testHash = {
+        [INIT]: jest.fn(),
+      };
+    });
+
+    it('uses the default reducer method if current state is not matched', () => {
+      const expectedState = faker.hacker.noun();
+      givenState = givenState.set(KEY_STATE, expectedState);
+
+      const otherState = faker.random.word();
+      testHash[otherState] = jest.fn();
+
+      const reducer = createStateMachine(testHash);
+
+      reducer(givenState, givenAction);
+
+      expect(testHash[INIT]).toBeCalledWith(givenState, givenAction);
+      expect(testHash[otherState]).not.toBeCalled();
+    });
+
+    it('uses the given fallback reducer method if given state property is not matched', () => {
+      const alternateStateKey = faker.random.word();
+
+      const expectedState = faker.hacker.noun();
+      givenState = givenState.set(alternateStateKey, expectedState);
+
+      const otherState = faker.random.word();
+      testHash[otherState] = jest.fn();
+
+      const reducer = createStateMachine(testHash, otherState, alternateStateKey);
+
+      reducer(givenState, givenAction);
+
+      expect(testHash[otherState]).toBeCalledWith(givenState, givenAction);
+      expect(testHash[INIT]).not.toBeCalled();
+    });
+
+    it('uses the reducer method associated with the current state', () => {
+      const expectedState = faker.hacker.noun();
+      givenState = givenState.set(KEY_STATE, expectedState);
+      testHash[expectedState] = jest.fn();
+
+      const reducer = createStateMachine(testHash);
+
+      reducer(givenState, givenAction);
+
+      expect(testHash[expectedState]).toBeCalledWith(givenState, givenAction);
+      expect(testHash[INIT]).not.toBeCalled();
+    });
+
+
+    it('uses traverseReducerArray if reducer method is an array', () => {
+      const expectedState = faker.hacker.noun();
+      givenState = givenState.set(KEY_STATE, expectedState);
+
+      const expectedCallback = jest.fn();
+      testHash[expectedState] = [expectedCallback];
+
+      const reducer = createStateMachine(testHash);
+      reducer(givenState, givenAction);
+
+      expect(expectedCallback).toBeCalledWith(givenState, givenAction);
+      expect(testHash[INIT]).not.toBeCalled();
+    });
   });
 });
