@@ -5,15 +5,18 @@
   "author": "Christopher Roussel <christopher@impleri.net>",
   "homepage": "",
   "license": "MIT",
-  "main": "dist/wedge.js",
+  "main": "dist/wedge.es5.js",
+  "browser": "dist/wedge.umd.js",
+  "module": "dist/wedge.js",
   "keywords": [
     "redux",
     "state",
     "machine"
   ],
   "scripts": {
+    "build": "rollup -c",
     "lint": "eslint .",
-    "pretest": "npm run lint",
+    "pretest": "npm run build && npm run lint",
     "test": "jest"
   },
   "peerDependencies": {
@@ -23,6 +26,7 @@
   },
   "devDependencies": {
     "eslint": "^5.6.0",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "rollup": "^0.66.2"
   }
 }

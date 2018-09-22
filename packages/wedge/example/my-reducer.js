@@ -2,9 +2,9 @@ import { fromJS, List } from 'immutable';
 import {
   INIT,
   KEY_STATE,
-  reducerFactory,
-  createStateMachine,
-} from '../dist';
+  createReducerFactory,
+  registerStateMachine,
+} from '../dist/wedge';
 
 // First define (or import) some action and state constants
 const SLICE_NAMESPACE = 'TODOS';
@@ -21,7 +21,7 @@ const INITIAL_STATE = fromJS({
 });
 
 // Factory method to instantiate all reducers with the given initial state
-const createReducer = reducerFactory(INITIAL_STATE);
+const createReducer = createReducerFactory(INITIAL_STATE);
 
 // Simple reducer method to add an item from action payload into the store
 const addTodo = createReducer(
@@ -64,8 +64,8 @@ const clearFinished = createReducer(
 // Two things happen here:
 // 1. A reducer is created to respond based on the state of the machine
 // 2. That reducer is added to an internal registry
-export default createStateMachine({
+registerStateMachine(SLICE_NAMESPACE, {
   [INIT]: [addTodo],
   [STATE_READY]: [addTodo, toggleTodo],
   [STATE_COMPLETED]: [addTodo, toggleTodo, clearFinished],
-}, SLICE_NAMESPACE);
+});
