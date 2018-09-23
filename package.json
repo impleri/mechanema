@@ -21,5 +21,9 @@
     "redux-immutable": "^4.0.0",
     "rollup-plugin-commonjs": "^9.1.8",
     "rollup-plugin-node-resolve": "^3.4.0"
+  },
+  "scripts": {
+    "build": "lerna exec build",
+    "test": "lerna exec test"
   }
 }
