@@ -3,18 +3,28 @@
   "version": "0.1.0",
   "description": "Joins one more store slices to a component.",
   "author": "Christopher Roussel <christopher@impleri.net>",
-  "homepage": "",
+  "homepage": "https://github.com/impleri/mechanema",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/impleri/mechanema"
+  },
   "license": "MIT",
-  "main": "dist/screw.js",
+  "main": "dist/screw.es5.js",
+  "browser": "dist/screw.umd.js",
+  "module": "dist/screw.js",
   "keywords": [
     "redux",
     "state",
     "machine"
   ],
-  "scripts": {
-    "test": "jest"
+  "dependencies": {
+    "moize": "^5.4.1"
   },
   "peerDependencies": {
-    "redux": "^4.0.0"
+    "@mechanema/wedge": "*",
+    "immutable": "^4.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@mechanema/wedge": "*"
   }
 }
