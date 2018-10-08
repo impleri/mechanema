@@ -25,7 +25,7 @@
     "rollup-plugin-node-resolve": "^3.4.0"
   },
   "scripts": {
-    "build": "lerna --scope=@mechanema/screw exec -- rollup -c ../../rollup.config.js",
+    "build": "lerna --ignore=@mechanema/pulley exec -- rollup -c ../../rollup.config.js",
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "npm run testonly",

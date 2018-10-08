@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import moize from 'moize';
 
-function getSlice(namespace) {
+export function getSlice(namespace) {
   return state => state.get(namespace, Map());
 }
 

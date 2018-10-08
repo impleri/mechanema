@@ -13082,6 +13082,7 @@
 
 	exports.getStateSelector = getStateSelector;
 	exports.createSelector = createSelector;
+	exports.getSlice = getSlice;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

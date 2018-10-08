@@ -6036,7 +6036,7 @@
 	  machineStateKey = KEY_STATE,
 	) {
 	  return (state, action) => {
-	    const currentState = state.get(machineStateKey, INIT);
+	    const currentState = state.get(machineStateKey, initialMachineState);
 
 	    let reducerCallback = machineHash[initialMachineState];
 	    if (Object.prototype.hasOwnProperty.call(machineHash, currentState)) {
