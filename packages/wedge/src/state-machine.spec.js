@@ -1,7 +1,7 @@
 import faker from 'faker';
 import { List, Map } from 'immutable';
 
-let {
+const {
   createStateMachine,
   INIT,
   KEY_STATE,
@@ -13,7 +13,7 @@ describe('state machine functions', () => {
     it('are exported', () => {
       expect(`${INIT}`.length).toBeGreaterThan(0);
       expect(`${KEY_STATE}`.length).toBeGreaterThan(0);
-     });
+    });
   });
 
   describe('traverseReducerArray', () => {

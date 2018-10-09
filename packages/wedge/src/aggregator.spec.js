@@ -1,5 +1,4 @@
 import faker from 'faker';
-import { Map } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
 import createRootReducer, { registerReducer, registerStateMachine } from './aggregator';

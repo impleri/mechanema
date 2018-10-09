@@ -1,5 +1,7 @@
 import faker from 'faker';
 import { Map } from 'immutable';
+import moize from 'moize';
+import createSelector from './selector';
 
 jest.unmock('immutable');
 jest.mock('moize', () => {
@@ -9,9 +11,6 @@ jest.mock('moize', () => {
   return mockFn;
 });
 jest.mock('@mechanema/wedge');
-
-import moize from 'moize';
-import createSelector from './selector';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -96,10 +95,10 @@ describe('createSelector', () => {
       const givenReturn = faker.random.words();
       const givenSelectorFn = jest.fn(() => givenReturn);
       const givenSliceState = Map({
-        inSlice: true
+        inSlice: true,
       });
       const givenState = Map({
-        [givenNamespace]: givenSliceState
+        [givenNamespace]: givenSliceState,
       });
 
       const receivedSelector = createSelector(givenNamespace, givenSelectorFn);

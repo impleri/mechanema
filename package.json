@@ -12,6 +12,7 @@
     "eslint": "^5.6.1",
     "eslint-config-airbnb-base": "^13.1",
     "eslint-plugin-import": "^2.14",
+    "eslint-plugin-jest": "^21.24.1",
     "faker": "^4.1.0",
     "flow-bin": "^0.80.0",
     "immutable": "^4.0.0-rc.9",
@@ -30,5 +31,11 @@
     "pretest": "npm run lint",
     "test": "npm run testonly",
     "testonly": "jest"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "packages/*/src/**/*.{js,jsx}",
+      "!<rootDir>/node_modules/"
+    ]
   }
 }

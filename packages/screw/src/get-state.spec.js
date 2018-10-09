@@ -1,10 +1,10 @@
 import faker from 'faker';
 import { INIT, KEY_STATE } from '@mechanema/wedge';
+import getStateSelector from './get-state';
+import createSelector from './selector';
 
 jest.unmock('immutable');
 jest.mock('./selector', () => jest.fn());
-
-import getStateSelector from './get-state';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -12,7 +12,6 @@ beforeEach(() => {
 
 describe('getStateSelector', () => {
   it('wraps createSelector with default args', () => {
-    const createSelector = require('./selector');
     const givenNamespace = faker.random.word();
 
     const givenState = {
@@ -26,12 +25,10 @@ describe('getStateSelector', () => {
     expect(givenState.get).toBeCalledWith(KEY_STATE, INIT);
   });
 
-  it('wraps createSelector with default args', () => {
-    const createSelector = require('./selector');
+  it('wraps createSelector with custom args', () => {
     const givenNamespace = faker.random.word();
     const givenStateKey = faker.random.word();
     const givenInitState = faker.random.word();
-    const expectedState = faker.hacker.noun();
 
     const givenState = {
       get: jest.fn(),
