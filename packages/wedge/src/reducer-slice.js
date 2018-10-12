@@ -1,3 +1,14 @@
+// @flow strict
+
+import { Collection } from 'immutable';
+import type { Action, ReducerMethod } from './state-machine';
+
+type SliceMethod = (
+  state: Collection<any, any>,
+  payload: ?Collection<any, any>,
+  action: Action,
+) => Collection<any, any>;
+
 /**
  * Create Reducer
  *
@@ -6,12 +17,16 @@
  * @param {string}               onAction     Expected redux action.
  * @param {Immutable.Collection} initialState Defined initial state for the
  *                                            reducer slice.
- * @param {function}             stateFn      Callback to trigger state change
+ * @param {SliceCallback}        stateFn      Callback to trigger state change
  *                                            if received expected action.
- * @return {function}                         Standard reducer function.
+ * @return {ReducerMethod}                    Standard reducer function.
  */
-export function createReducer(onAction, initialState, stateFn) {
-  return (state = initialState, action) => {
+export function createReducer(
+  onAction: string,
+  initialState: Collection<any, any>,
+  stateFn: SliceMethod,
+): ReducerMethod {
+  return (state: Collection<any, any> = initialState, action: Action): Collection<any, any> => {
     if (action.type === onAction) {
       return stateFn(state, action.payload, action);
     }
@@ -19,6 +34,8 @@ export function createReducer(onAction, initialState, stateFn) {
     return state;
   };
 }
+
+type CreateReducerMethod = (onAction: string, stateFn: SliceMethod) => ReducerMethod;
 
 /**
  * Create Reducer Factory
@@ -29,6 +46,8 @@ export function createReducer(onAction, initialState, stateFn) {
  *                                            methods.
  * @return {function}                         Curried proxy to createReducer.
  */
-export default function createReducerFactory(initialState) {
+export default function createReducerFactory(
+  initialState: Collection<any, any>,
+): CreateReducerMethod {
   return (onAction, stateFn) => createReducer(onAction, initialState, stateFn);
 }

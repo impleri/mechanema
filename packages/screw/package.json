@@ -10,7 +10,6 @@
   },
   "license": "MIT",
   "main": "dist/screw.es5.js",
-  "browser": "dist/screw.umd.js",
   "module": "dist/screw.js",
   "keywords": [
     "redux",

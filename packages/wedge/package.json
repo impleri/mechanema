@@ -10,7 +10,6 @@
   },
   "license": "MIT",
   "main": "dist/wedge.es5.js",
-  "browser": "dist/wedge.umd.js",
   "module": "dist/wedge.js",
   "keywords": [
     "redux",

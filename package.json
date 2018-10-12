@@ -2,19 +2,22 @@
   "name": "mechanema",
   "version": "0.0.1",
   "description": "A collection of simple machines for redux.",
+  "private": true,
   "main": "index.js",
   "author": "Christopher Roussel <christopher@impleri.net>",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-eslint": "^10.0.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
     "eslint": "^5.6.1",
     "eslint-config-airbnb-base": "^13.1",
+    "eslint-plugin-flowtype": "^2.50.3",
     "eslint-plugin-import": "^2.14",
     "eslint-plugin-jest": "^21.24.1",
     "faker": "^4.1.0",
-    "flow-bin": "^0.80.0",
+    "flow-bin": "^0.82.0",
     "immutable": "^4.0.0-rc.9",
     "jest": "^23.6.0",
     "lerna": "^3.2",
@@ -23,6 +26,7 @@
     "redux-immutable": "^4.0.0",
     "rollup": "^0.66.2",
     "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-flow": "^1.1.1",
     "rollup-plugin-node-resolve": "^3.4.0"
   },
   "scripts": {
@@ -32,6 +36,9 @@
     "test": "npm run testonly",
     "testonly": "jest"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "jest": {
     "collectCoverageFrom": [
       "packages/*/src/**/*.{js,jsx}",

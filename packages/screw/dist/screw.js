@@ -2,8 +2,11 @@ import { Map } from 'immutable';
 import moize from 'moize';
 import { INIT, KEY_STATE } from '@mechanema/wedge';
 
+//  strict
+
+
 function getSlice(namespace) {
-  return state => state.get(namespace, Map());
+  return (state) => state.get(namespace, Map());
 }
 
 function createSimpleSelector(selectorFn) {
@@ -20,7 +23,10 @@ function createSimpleSelector(selectorFn) {
   return moize.maxArgs(0)(() => selectorFn);
 }
 
-function createComplexSelector(dependencies, aggregateFn) {
+function createComplexSelector(
+  dependencies,
+  aggregateFn,
+) {
   // memoize all the dependency selectors
   const memoizedDeps = dependencies.map(createSimpleSelector);
   const memoizedAggregage = createSimpleSelector(aggregateFn);
@@ -38,7 +44,10 @@ function createComplexSelector(dependencies, aggregateFn) {
   );
 }
 
-function createSelector(mixedParam, selectorFn) {
+function createSelector(
+  mixedParam,
+  selectorFn,
+) {
   let selector = () => {};
 
   // Assume a complex selector if given an array
@@ -46,10 +55,17 @@ function createSelector(mixedParam, selectorFn) {
     const aggregateFn = (typeof selectorFn === 'function') ? selectorFn : mixedParam.pop();
     const dependencies = mixedParam;
 
-    selector = createComplexSelector(dependencies, aggregateFn);
+    selector = createComplexSelector(
+      (dependencies),
+      aggregateFn,
+    );
   // If given two params, still a simple selector but on a slice
-  } else if (typeof mixedParam === 'string' && typeof selectorFn === 'function') {
-    selector = createComplexSelector([getSlice(mixedParam)], selectorFn);
+  } else if (typeof mixedParam === 'string') {
+    if (typeof selectorFn === 'function') {
+      selector = createComplexSelector([getSlice(mixedParam)], selectorFn);
+    } else {
+      selector = createSimpleSelector(() => mixedParam);
+    }
   // If given a function, should be a simple selector
   } else {
     selector = createSimpleSelector(mixedParam);
@@ -58,8 +74,17 @@ function createSelector(mixedParam, selectorFn) {
   return selector;
 }
 
-function getStateSelector(namespace, stateKey = KEY_STATE, initState = INIT) {
-  return createSelector(namespace, sliceState => sliceState.get(stateKey, initState));
+//  strict
+
+function getStateSelector(
+  namespace,
+  stateKey = KEY_STATE,
+  initState = INIT,
+) {
+  return createSelector(
+    namespace,
+    (sliceState) => sliceState.get(stateKey, initState),
+  );
 }
 
 export { getStateSelector, createSelector, getSlice };

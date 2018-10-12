@@ -1,4 +1,7 @@
+import 'immutable';
 import { combineReducers } from 'redux-immutable';
+
+//  strict
 
 /**
  * The predefined initial/fallback state
@@ -11,19 +14,23 @@ const INIT = 'INIT';
  */
 const KEY_STATE = 'machineState';
 
+
 /**
  * Traverse Reducer Array
  *
  * Iterates over an array of reducer slice methods to generate a single change
  * of state in redux store.
- * @param {Array<Function>} reducerArray Array of reducer methods (generally
- *                                       created via createReducer from
- *                                       `./reducer-slide`).
- * @return                               Standard reducer function.
+ * @param {Array<ReducerMethod>} reducerArray Array of reducer methods (generally
+ *                                            created via createReducer from
+ *                                            `./reducer-slide`).
+ * @return {ReducerMethod}       Standard reducer function.
  */
 function traverseReducerArray(reducerArray) {
   return (state, action) => reducerArray.reduce(
-    (newState, reducerSlice) => reducerSlice(newState, action),
+    (
+      newState,
+      reducerSlice,
+    ) => reducerSlice(newState, action),
     state,
   );
 }
@@ -57,6 +64,8 @@ function createStateMachine(
   };
 }
 
+//  strict
+
 /**
  * Internal registry to aggregate reducers.
  */
@@ -66,7 +75,7 @@ const REGISTRY = {};
  * Create Root Reducer
  *
  * Generates an Immutable-based reducer to inject into config.
- * @return {function} Root reducer function.
+ * @return {ReducerMethod} Root reducer function.
  */
 function createRootReducer() {
   return combineReducers(REGISTRY);
@@ -101,6 +110,9 @@ function registerStateMachine(namespace, machineDefinition) {
   registerReducer(namespace, stateMachine);
 }
 
+//  strict
+
+
 /**
  * Create Reducer
  *
@@ -109,11 +121,15 @@ function registerStateMachine(namespace, machineDefinition) {
  * @param {string}               onAction     Expected redux action.
  * @param {Immutable.Collection} initialState Defined initial state for the
  *                                            reducer slice.
- * @param {function}             stateFn      Callback to trigger state change
+ * @param {SliceCallback}        stateFn      Callback to trigger state change
  *                                            if received expected action.
- * @return {function}                         Standard reducer function.
+ * @return {ReducerMethod}                    Standard reducer function.
  */
-function createReducer(onAction, initialState, stateFn) {
+function createReducer(
+  onAction,
+  initialState,
+  stateFn,
+) {
   return (state = initialState, action) => {
     if (action.type === onAction) {
       return stateFn(state, action.payload, action);
@@ -122,6 +138,7 @@ function createReducer(onAction, initialState, stateFn) {
     return state;
   };
 }
+
 
 /**
  * Create Reducer Factory
@@ -132,7 +149,9 @@ function createReducer(onAction, initialState, stateFn) {
  *                                            methods.
  * @return {function}                         Curried proxy to createReducer.
  */
-function createReducerFactory(initialState) {
+function createReducerFactory(
+  initialState,
+) {
   return (onAction, stateFn) => createReducer(onAction, initialState, stateFn);
 }
 

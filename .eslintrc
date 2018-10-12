@@ -1,12 +1,19 @@
 {
   "extends": [
     "airbnb-base",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:flowtype/recommended"
   ],
   "env": {
     "jest/globals": true
   },
   "plugins": [
-    "jest"
-  ]
+    "jest",
+    "flowtype"
+  ],
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
+  }
 }

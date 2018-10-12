@@ -1,4 +1,9 @@
 [ignore]
+packages.*/dist/.*
+.*\/node_modules\/.*\(lib\|test\)\/.*\.json$
+.*/__tests__/.*
+.*\.test\.js$
+.*\.spec\.js$
 
 [include]
 
