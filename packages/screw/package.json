@@ -11,6 +11,9 @@
   "license": "MIT",
   "main": "dist/screw.es5.js",
   "module": "dist/screw.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "redux",
     "state",

@@ -11,6 +11,9 @@
   "license": "MIT",
   "main": "dist/wedge.es5.js",
   "module": "dist/wedge.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "redux",
     "state",
