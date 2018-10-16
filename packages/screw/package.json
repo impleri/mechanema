@@ -1,6 +1,6 @@
 {
   "name": "@mechanema/screw",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Joins one more store slices to a component.",
   "author": "Christopher Roussel <christopher@impleri.net>",
   "homepage": "https://github.com/impleri/mechanema",
@@ -27,6 +27,6 @@
     "immutable": "^4.0.0-rc.1"
   },
   "devDependencies": {
-    "@mechanema/wedge": "^0.2.0"
+    "@mechanema/wedge": "^0.2.1"
   }
 }
