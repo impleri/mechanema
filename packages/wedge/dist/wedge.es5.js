@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('immutable');
+var immutable = require('immutable');
 var reduxImmutable = require('redux-immutable');
 
 //  strict
@@ -30,12 +30,15 @@ const KEY_STATE = 'machineState';
  * @return {ReducerMethod}       Standard reducer function.
  */
 function traverseReducerArray(reducerArray) {
-  return (state, action) => reducerArray.reduce(
+  return (
+    state,
+    action,
+  ) => reducerArray.reduce(
     (
       newState,
       reducerSlice,
     ) => reducerSlice(newState, action),
-    state,
+    state || immutable.Map(),
   );
 }
 
@@ -53,10 +56,12 @@ function createStateMachine(
   machineStateKey = KEY_STATE,
 ) {
   return (state, action) => {
-    const currentState = state.get(machineStateKey, initialMachineState);
+    const currentState = (state)
+      ? state.get(machineStateKey, initialMachineState)
+      : undefined;
 
     let reducerCallback = machineHash[initialMachineState];
-    if (Object.prototype.hasOwnProperty.call(machineHash, currentState)) {
+    if (currentState && Object.prototype.hasOwnProperty.call(machineHash, currentState)) {
       reducerCallback = machineHash[currentState];
     }
 
@@ -135,11 +140,11 @@ function createReducer(
   stateFn,
 ) {
   return (state = initialState, action) => {
-    if (action.type === onAction) {
+    if (action && action.type === onAction) {
       return stateFn(state, action.payload, action);
     }
 
-    return state;
+    return state || initialState;
   };
 }
 

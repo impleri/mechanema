@@ -103,6 +103,18 @@ describe('state machine functions', () => {
       };
     });
 
+    it('returns the default state if none provided', () => {
+      const otherState = faker.random.word();
+      testHash[otherState] = jest.fn();
+
+      const reducer = createStateMachine(testHash);
+
+      reducer();
+
+      expect(testHash[INIT]).toBeCalledWith(undefined, undefined);
+      expect(testHash[otherState]).not.toBeCalled();
+    });
+
     it('uses the default reducer method if current state is not matched', () => {
       const expectedState = faker.hacker.noun();
       givenState = givenState.set(KEY_STATE, expectedState);

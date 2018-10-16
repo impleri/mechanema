@@ -1,6 +1,6 @@
 // @flow strict
 
-import { Collection } from 'immutable';
+import { Collection, Map } from 'immutable';
 
 /**
  * The predefined initial/fallback state
@@ -14,7 +14,7 @@ export const INIT = 'INIT';
 export const KEY_STATE = 'machineState';
 
 export type Action = {type: string, payload: ?any};
-export type ReducerMethod = (state: Collection<any, any>, action: Action) => Collection<any, any>;
+export type ReducerMethod = (state: ?Collection<any, any>, action: ?Action) => Collection<any, any>;
 export type StateMachineHash = {
   [state: string]: ReducerMethod | Array<ReducerMethod>
 };
@@ -30,12 +30,15 @@ export type StateMachineHash = {
  * @return {ReducerMethod}       Standard reducer function.
  */
 export function traverseReducerArray(reducerArray: Array<ReducerMethod>): ReducerMethod {
-  return (state: Collection<any, any>, action: Action): Collection<any, any> => reducerArray.reduce(
+  return (
+    state: ?Collection<any, any>,
+    action: ?Action,
+  ): Collection<any, any> => reducerArray.reduce(
     (
       newState: Collection<any, any>,
       reducerSlice: ReducerMethod,
     ): Collection<any, any> => reducerSlice(newState, action),
-    state,
+    state || Map(),
   );
 }
 
@@ -52,11 +55,13 @@ export function createStateMachine(
   initialMachineState: string = INIT,
   machineStateKey: string = KEY_STATE,
 ): ReducerMethod {
-  return (state: Collection<any, any>, action: Action): Collection<any, any> => {
-    const currentState: string = state.get(machineStateKey, initialMachineState);
+  return (state: ?Collection<any, any>, action: ?Action): Collection<any, any> => {
+    const currentState: ?string = (state)
+      ? state.get(machineStateKey, initialMachineState)
+      : undefined;
 
     let reducerCallback: ReducerMethod | Array<ReducerMethod> = machineHash[initialMachineState];
-    if (Object.prototype.hasOwnProperty.call(machineHash, currentState)) {
+    if (currentState && Object.prototype.hasOwnProperty.call(machineHash, currentState)) {
       reducerCallback = machineHash[currentState];
     }
 

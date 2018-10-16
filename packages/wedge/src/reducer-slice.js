@@ -4,7 +4,7 @@ import { Collection } from 'immutable';
 import type { Action, ReducerMethod } from './state-machine';
 
 type SliceMethod = (
-  state: Collection<any, any>,
+  state: ?Collection<any, any>,
   payload: ?Collection<any, any>,
   action: Action,
 ) => Collection<any, any>;
@@ -26,12 +26,12 @@ export function createReducer(
   initialState: Collection<any, any>,
   stateFn: SliceMethod,
 ): ReducerMethod {
-  return (state: Collection<any, any> = initialState, action: Action): Collection<any, any> => {
-    if (action.type === onAction) {
+  return (state: ?Collection<any, any> = initialState, action: ?Action): Collection<any, any> => {
+    if (action && action.type === onAction) {
       return stateFn(state, action.payload, action);
     }
 
-    return state;
+    return state || initialState;
   };
 }
 
