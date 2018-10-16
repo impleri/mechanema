@@ -60,13 +60,9 @@ function createSelector(
       aggregateFn,
     );
   // If given two params, still a simple selector but on a slice
-  } else if (typeof mixedParam === 'string') {
-    if (typeof selectorFn === 'function') {
-      selector = createComplexSelector([getSlice(mixedParam)], selectorFn);
-    } else {
-      selector = createSimpleSelector(() => mixedParam);
-    }
-  // If given a function, should be a simple selector
+  } else if (typeof selectorFn === 'function' && typeof mixedParam === 'string') {
+    selector = createComplexSelector([getSlice(mixedParam)], selectorFn);
+  // If given anything else, should be a simple selector
   } else {
     selector = createSimpleSelector(mixedParam);
   }

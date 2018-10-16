@@ -47,7 +47,7 @@ function createComplexSelector(
 }
 
 export default function createSelector(
-  mixedParam: SelectorMethod | Array<SelectorMethod | ConstantMethod> | string,
+  mixedParam: SelectorMethod | Array<SelectorMethod | ConstantMethod> | any,
   selectorFn?: SelectorMethod,
 ): SelectorMethod {
   let selector = () => {};
@@ -62,13 +62,9 @@ export default function createSelector(
       aggregateFn,
     );
   // If given two params, still a simple selector but on a slice
-  } else if (typeof mixedParam === 'string') {
-    if (typeof selectorFn === 'function') {
-      selector = createComplexSelector([getSlice(mixedParam)], selectorFn);
-    } else {
-      selector = createSimpleSelector((): string => mixedParam);
-    }
-  // If given a function, should be a simple selector
+  } else if (typeof selectorFn === 'function' && typeof mixedParam === 'string') {
+    selector = createComplexSelector([getSlice(mixedParam)], selectorFn);
+  // If given anything else, should be a simple selector
   } else {
     selector = createSimpleSelector(mixedParam);
   }
