@@ -1,7 +1,7 @@
 import faker from 'faker';
 import { Map } from 'immutable';
 
-import createReducerFactory, { createReducer } from './reducer-slice';
+import { createReducer } from './reducer-slice';
 
 describe('reducer slice functions', () => {
   describe('createReducer', () => {
@@ -22,23 +22,19 @@ describe('reducer slice functions', () => {
         [faker.lorem.word()]: {},
       });
       const callback = jest.fn();
-      const reducerFn = createReducer(expectedAction, initialState, callback);
+      const reducerFn = createReducer(expectedAction, callback);
 
       const givenAction = {
         type: faker.hacker.verb(),
       };
 
-      expect(reducerFn(undefined, givenAction)).toEqual(initialState);
+      expect(reducerFn(initialState, givenAction)).toEqual(initialState);
     });
 
     it('does nothing on the wrong action', () => {
       const expectedAction = faker.hacker.noun();
-      const initialState = Map({
-        [faker.lorem.word()]: [],
-        [faker.lorem.word()]: {},
-      });
       const callback = jest.fn();
-      const reducerFn = createReducer(expectedAction, initialState, callback);
+      const reducerFn = createReducer(expectedAction, callback);
 
       const givenAction = {
         type: faker.hacker.verb(),
@@ -63,10 +59,6 @@ describe('reducer slice functions', () => {
 
     it('triggers the callback on the right action', () => {
       const expectedAction = faker.hacker.noun();
-      const initialState = Map({
-        [faker.lorem.word()]: [],
-        [faker.lorem.word()]: {},
-      });
 
       const listKey = faker.lorem.word();
       const mapKey = faker.lorem.word();
@@ -82,7 +74,7 @@ describe('reducer slice functions', () => {
       };
 
       const callback = (state, payload) => state.setIn([mapKey, newKey], payload[valueKey]);
-      const reducerFn = createReducer(expectedAction, initialState, callback);
+      const reducerFn = createReducer(expectedAction, callback);
 
       const givenState = Map({
         [listKey]: [
@@ -99,24 +91,6 @@ describe('reducer slice functions', () => {
       const expectedState = givenState.setIn([mapKey, newKey], value);
 
       expect(reducerFn(givenState, givenAction)).toEqual(expectedState);
-    });
-  });
-
-  describe('createReducerFactory', () => {
-    it('curries the initial state', () => {
-      const expectedAction = faker.hacker.noun();
-      const initialState = Map({
-        [faker.lorem.word()]: faker.lorem.paragraphs(),
-      });
-      const callback = jest.fn();
-      const instanceCreateReducer = createReducerFactory(initialState);
-      const reducerFn = instanceCreateReducer(expectedAction, callback);
-
-      const givenAction = {
-        type: faker.hacker.verb(),
-      };
-
-      expect(reducerFn(undefined, givenAction)).toEqual(initialState);
     });
   });
 });

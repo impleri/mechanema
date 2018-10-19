@@ -34,7 +34,7 @@ function traverseReducerArray(reducerArray) {
       newState,
       reducerSlice,
     ) => reducerSlice(newState, action),
-    state || Map(),
+    state,
   );
 }
 
@@ -42,19 +42,20 @@ function traverseReducerArray(reducerArray) {
  * Create State Machine
  *
  * Translates a Hashmap of state-based reducer into a standard reducer function.
- * @param {object} machineHash         Hashmap of (state => reducer).
+ * @param {object}     machineHash     Hashmap of (state => reducer).
+ * @param {Collection} initialState    Defined initial state for the
+ *                                     reducer slice.
  * @param {string} initialMachineState Value for the initial/fallback state.
  * @param {string} machineStateKey     Key where the reducer slice's state is stored.
  */
 function createStateMachine(
   machineHash,
+  initialState = Map(),
   initialMachineState = INIT,
   machineStateKey = KEY_STATE,
 ) {
-  return (state, action) => {
-    const currentState = (state)
-      ? state.get(machineStateKey, initialMachineState)
-      : undefined;
+  return (state = initialState, action) => {
+    const currentState = state.get(machineStateKey, initialMachineState);
 
     let reducerCallback = machineHash[initialMachineState];
     if (currentState && Object.prototype.hasOwnProperty.call(machineHash, currentState)) {
@@ -132,15 +133,14 @@ function registerStateMachine(namespace, machineDefinition) {
  */
 function createReducer(
   onAction,
-  initialState,
   stateFn,
 ) {
-  return (state = initialState, action) => {
+  return (state, action) => {
     if (action && action.type === onAction) {
-      return stateFn(state, action.payload, action);
+      return stateFn(state, action.payload || action, action);
     }
 
-    return state || initialState;
+    return state;
   };
 }
 
@@ -153,11 +153,10 @@ function createReducer(
  * @param {Immutable.Collection} initialState Initial state to use for reducer
  *                                            methods.
  * @return {function}                         Curried proxy to createReducer.
+ * @deprecated
  */
-function createReducerFactory(
-  initialState,
-) {
-  return (onAction, stateFn) => createReducer(onAction, initialState, stateFn);
+function createReducerFactory() {
+  return (onAction, stateFn) => createReducer(onAction, stateFn);
 }
 
 export { createRootReducer, createReducerFactory, registerReducer, registerStateMachine, createReducer, INIT, KEY_STATE, traverseReducerArray, createStateMachine };

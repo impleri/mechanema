@@ -90,6 +90,9 @@ describe('state machine functions', () => {
     let testHash;
     let givenState = Map();
     let givenAction;
+    const initialState = Map({
+      [faker.random.word()]: faker.lorem.paragraph(),
+    });
 
     beforeEach(() => {
       givenState = Map();
@@ -99,20 +102,36 @@ describe('state machine functions', () => {
       };
 
       testHash = {
-        [INIT]: jest.fn(),
+        [INIT]: jest.fn(state => state),
       };
     });
 
     it('returns the default state if none provided', () => {
       const otherState = faker.random.word();
-      testHash[otherState] = jest.fn();
+      testHash[otherState] = jest.fn(state => state);
+
+      const expectedState = Map();
 
       const reducer = createStateMachine(testHash);
 
-      reducer();
+      const receivedState = reducer();
 
-      expect(testHash[INIT]).toBeCalledWith(undefined, undefined);
+      expect(testHash[INIT]).toBeCalledWith(expectedState, undefined);
       expect(testHash[otherState]).not.toBeCalled();
+      expect(receivedState.equals(expectedState)).toBe(true);
+    });
+
+    it('returns the given initial state if none provided', () => {
+      const otherState = faker.random.word();
+      testHash[otherState] = jest.fn(state => state);
+
+      const reducer = createStateMachine(testHash, initialState);
+
+      const receivedState = reducer();
+
+      expect(testHash[INIT]).toBeCalledWith(initialState, undefined);
+      expect(testHash[otherState]).not.toBeCalled();
+      expect(receivedState.equals(initialState)).toBe(true);
     });
 
     it('uses the default reducer method if current state is not matched', () => {
@@ -139,7 +158,7 @@ describe('state machine functions', () => {
       const otherState = faker.random.word();
       testHash[otherState] = jest.fn();
 
-      const reducer = createStateMachine(testHash, otherState, alternateStateKey);
+      const reducer = createStateMachine(testHash, initialState, otherState, alternateStateKey);
 
       reducer(givenState, givenAction);
 
