@@ -1,6 +1,7 @@
 // @flow strict
 
-import { Collection, Map } from 'immutable';
+import { Map } from 'immutable';
+import type { Collection } from 'immutable';
 
 /**
  * The predefined initial/fallback state

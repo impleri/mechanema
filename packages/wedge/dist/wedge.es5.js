@@ -111,16 +111,23 @@ function registerReducer(namespace, reducerFn) {
  * Register State Machine
  *
  * Adds a state machine reducer to the registry at the specified namespace key.
- * @param {string} namespace         Key to identify reducer slice for redux.
- * @param {object} machineDefinition State Machine definition to use.
+ * @param {string}    namespace         Key to identify reducer slice for redux.
+ * @param {object}    machineDefinition State Machine definition to use.
+ * @return {function} State machine Reducer function
  */
-function registerStateMachine(namespace, machineDefinition) {
+function registerStateMachine(
+  namespace,
+  machineDefinition,
+) {
   const stateMachine = createStateMachine(machineDefinition);
 
   registerReducer(namespace, stateMachine);
+
+  return stateMachine;
 }
 
 //  strict
+
 
 
 /**

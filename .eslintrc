@@ -11,6 +11,9 @@
     "jest",
     "flowtype"
   ],
+  "rules": {
+    "import/no-extraneous-dependencies": "warn"
+  },
   "settings": {
     "flowtype": {
       "onlyFilesWithFlowAnnotation": true

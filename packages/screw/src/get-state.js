@@ -1,7 +1,7 @@
 // @flow strict
 
 import { INIT, KEY_STATE } from '@mechanema/wedge';
-import { Collection } from 'immutable';
+import type { Collection } from 'immutable';
 import createSelector from './selector';
 import type { SelectorMethod } from './selector';
 

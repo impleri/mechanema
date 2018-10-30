@@ -40,11 +40,17 @@ export function registerReducer(namespace: string, reducerFn: ReducerMethod): vo
  * Register State Machine
  *
  * Adds a state machine reducer to the registry at the specified namespace key.
- * @param {string} namespace         Key to identify reducer slice for redux.
- * @param {object} machineDefinition State Machine definition to use.
+ * @param {string}    namespace         Key to identify reducer slice for redux.
+ * @param {object}    machineDefinition State Machine definition to use.
+ * @return {function} State machine Reducer function
  */
-export function registerStateMachine(namespace: string, machineDefinition: StateMachineHash): void {
+export function registerStateMachine(
+  namespace: string,
+  machineDefinition: StateMachineHash,
+): ReducerMethod {
   const stateMachine = createStateMachine(machineDefinition);
 
   registerReducer(namespace, stateMachine);
+
+  return stateMachine;
 }

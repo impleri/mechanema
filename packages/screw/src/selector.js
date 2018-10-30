@@ -1,7 +1,8 @@
 // @flow strict
 
-import { Collection, Map } from 'immutable';
+import { Map } from 'immutable';
 import moize from 'moize';
+import type { Collection } from 'immutable';
 
 export type SelectorMethod = (state: Collection<any, any>) => any;
 type ConstantMethod = () => any;

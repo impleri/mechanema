@@ -11,7 +11,8 @@ export default {
     'immutable',
     'moize',
     'redux',
-    'redux-immutable',
+    'redux-immutable',,
+    '@mechanema/wedge'
   ],
   output: [
     {

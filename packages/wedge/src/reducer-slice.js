@@ -1,6 +1,6 @@
 // @flow strict
 
-import { Collection } from 'immutable';
+import type { Collection } from 'immutable';
 import type { Action, ReducerMethod } from './state-machine';
 
 type SliceMethod = (
