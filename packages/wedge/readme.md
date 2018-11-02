@@ -67,13 +67,9 @@ function (state = INITIAL_STATE, action) {
 }
 ```
 That looks like a bit of boilerplate, no? Well, `createReducer` comes to
-the rescue. It takes three parameters: the expected action (`SOME_ACTION`
-above), the initial state, and a callback for what to change based on the
+the rescue. It takes two parameters: the expected action (`SOME_ACTION`
+above), and a callback for what to change based on the
 action's payload (`(state, actionPayload, action) => state.merge({})`).
-
-Of course, you'll likely use the same initial state across all of these
-reducer methods, so why not abstract that out as well by using
-`createReducerFactory(initialState)` to return a two-parameter `createReducer`.
 
 In traditional redux setups, you'd then import all of these reducers into
 a single root reducer file and push them through `combineReducers` from Redux.

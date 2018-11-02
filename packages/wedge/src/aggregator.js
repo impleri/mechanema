@@ -1,5 +1,7 @@
 // @flow strict
 
+import { Map } from 'immutable';
+import type { Collection } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
 import { createStateMachine } from './state-machine';
@@ -40,15 +42,18 @@ export function registerReducer(namespace: string, reducerFn: ReducerMethod): vo
  * Register State Machine
  *
  * Adds a state machine reducer to the registry at the specified namespace key.
- * @param {string}    namespace         Key to identify reducer slice for redux.
- * @param {object}    machineDefinition State Machine definition to use.
- * @return {function} State machine Reducer function
+ * @param {string}     namespace           Key to identify reducer slice for redux.
+ * @param {object}     machineDefinition   State Machine definition to use.
+ * @param {Collection} initialState        Defined initial state for the
+ *                                         reducer slice.
+ * @return {function}  State machine Reducer function
  */
 export function registerStateMachine(
   namespace: string,
   machineDefinition: StateMachineHash,
+  initialState: Collection<any, any> = Map(),
 ): ReducerMethod {
-  const stateMachine = createStateMachine(machineDefinition);
+  const stateMachine = createStateMachine(machineDefinition, initialState);
 
   registerReducer(namespace, stateMachine);
 

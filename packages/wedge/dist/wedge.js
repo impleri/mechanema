@@ -107,15 +107,18 @@ function registerReducer(namespace, reducerFn) {
  * Register State Machine
  *
  * Adds a state machine reducer to the registry at the specified namespace key.
- * @param {string}    namespace         Key to identify reducer slice for redux.
- * @param {object}    machineDefinition State Machine definition to use.
- * @return {function} State machine Reducer function
+ * @param {string}     namespace           Key to identify reducer slice for redux.
+ * @param {object}     machineDefinition   State Machine definition to use.
+ * @param {Collection} initialState        Defined initial state for the
+ *                                         reducer slice.
+ * @return {function}  State machine Reducer function
  */
 function registerStateMachine(
   namespace,
   machineDefinition,
+  initialState = Map(),
 ) {
-  const stateMachine = createStateMachine(machineDefinition);
+  const stateMachine = createStateMachine(machineDefinition, initialState);
 
   registerReducer(namespace, stateMachine);
 
@@ -132,8 +135,6 @@ function registerStateMachine(
  * Creates a reducer function that upserts the redux store when given the
  * expected action.
  * @param {string}               onAction     Expected redux action.
- * @param {Immutable.Collection} initialState Defined initial state for the
- *                                            reducer slice.
  * @param {SliceCallback}        stateFn      Callback to trigger state change
  *                                            if received expected action.
  * @return {ReducerMethod}                    Standard reducer function.

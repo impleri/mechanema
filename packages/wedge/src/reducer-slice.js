@@ -15,8 +15,6 @@ type SliceMethod = (
  * Creates a reducer function that upserts the redux store when given the
  * expected action.
  * @param {string}               onAction     Expected redux action.
- * @param {Immutable.Collection} initialState Defined initial state for the
- *                                            reducer slice.
  * @param {SliceCallback}        stateFn      Callback to trigger state change
  *                                            if received expected action.
  * @return {ReducerMethod}                    Standard reducer function.

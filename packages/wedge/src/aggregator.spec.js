@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import faker from 'faker';
+import { Collection } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
 import createRootReducer, { registerReducer, registerStateMachine } from './aggregator';
@@ -57,7 +59,7 @@ describe('aggregation functions', () => {
         createRootReducer();
       }).not.toThrow();
 
-      expect(createStateMachine).toBeCalledWith(givenMachineHash);
+      expect(createStateMachine).toBeCalledWith(givenMachineHash, expect.any(Collection));
       expect(combineReducers).toBeCalledWith(expect.objectContaining({
         [givenNamespace]: expectedReducer,
       }));

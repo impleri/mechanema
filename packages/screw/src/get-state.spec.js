@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import faker from 'faker';
 import { INIT, KEY_STATE } from '@mechanema/wedge';
 import getStateSelector from './get-state';
