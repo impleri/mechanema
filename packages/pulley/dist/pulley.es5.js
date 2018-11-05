@@ -25,7 +25,7 @@ function createRootEpic() {
   const epicMethods = REGISTRY.reduce(
     (accumulator, epic) => accumulator.concat(epic),
     [],
-  ).map(epic => function* epicWatcher() {
+  ).map((epic) => function* epicWatcher() {
     let callEffect = epic.effect;
 
     if (typeof callEffect === 'string') {
@@ -40,7 +40,7 @@ function createRootEpic() {
   });
 
   return function* rootEpic() {
-    yield effects.all(epicMethods.map(epic => epic()));
+    yield effects.all(epicMethods.map((epic) => epic()));
   };
 }
 
