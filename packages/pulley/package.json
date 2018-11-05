@@ -3,18 +3,24 @@
   "version": "0.3.0",
   "description": "Lift the heavy objects out of basic actions for a Redux store.",
   "author": "Christopher Roussel <christopher@impleri.net>",
-  "homepage": "",
+  "homepage": "https://github.com/impleri/mechanema",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/impleri/mechanema"
+  },
   "license": "MIT",
-  "main": "dist/pulley.js",
+  "main": "dist/pulley.es5.js",
+  "module": "dist/pulley.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "redux",
     "state",
     "machine"
   ],
-  "scripts": {
-    "test": "jest"
-  },
   "peerDependencies": {
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.2"
   }
 }
