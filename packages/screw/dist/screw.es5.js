@@ -11,6 +11,43 @@ var wedge = require('@mechanema/wedge');
 //  strict
 
 
+
+
+function bindSelector(
+  selector,
+  state,
+) {
+  return selector(state);
+}
+
+function bindSelectors(
+  selectors,
+  state,
+) {
+  if (typeof selectors === 'function') {
+    return bindSelector(selectors, state);
+  }
+
+  if (typeof selectors !== 'object' || selectors === null) {
+    throw new Error(`bindSelectors expected an object or a function,
+      instead received ${(selectors === null) ? 'null' : typeof selectors}.`);
+  }
+
+  return Object.keys(selectors).reduce((aggregator, selectorKey) => {
+    const newAggregator = aggregator;
+    const selector = selectors[selectorKey];
+
+    if (typeof selector === 'function') {
+      newAggregator[selectorKey] = bindSelector(selector, state);
+    }
+
+    return newAggregator;
+  }, {});
+}
+
+//  strict
+
+
 function getSlice(namespace) {
   return (state) => state.get(namespace, immutable.Map());
 }
@@ -89,6 +126,7 @@ function getStateSelector(
   );
 }
 
+exports.bindSelectors = bindSelectors;
 exports.getStateSelector = getStateSelector;
 exports.createSelector = createSelector;
 exports.getSlice = getSlice;
