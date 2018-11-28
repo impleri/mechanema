@@ -2,7 +2,7 @@
 import faker from 'faker';
 import { Map } from 'immutable';
 
-import { createReducer } from './reducer-slice';
+import createReducer from './reducer-slice';
 
 describe('reducer slice functions', () => {
   describe('createReducer', () => {
@@ -58,7 +58,7 @@ describe('reducer slice functions', () => {
       expect(reducerFn(givenState, givenAction)).toEqual(givenState);
     });
 
-    it('triggers the callback on the right action', () => {
+    it('triggers the callback on the right action with the payload', () => {
       const expectedAction = faker.hacker.noun();
 
       const listKey = faker.lorem.word();
@@ -72,6 +72,40 @@ describe('reducer slice functions', () => {
         payload: {
           [valueKey]: value,
         },
+      };
+
+      const callback = (state, payload) => state.setIn([mapKey, newKey], payload[valueKey]);
+      const reducerFn = createReducer(expectedAction, callback);
+
+      const givenState = Map({
+        [listKey]: [
+          faker.lorem.sentence(),
+          faker.lorem.sentence(),
+          faker.lorem.sentence(),
+        ],
+        [mapKey]: {
+          [faker.lorem.slug]: faker.lorem.paragraph(),
+          [faker.lorem.slug]: faker.lorem.paragraphs(),
+        },
+      });
+
+      const expectedState = givenState.setIn([mapKey, newKey], value);
+
+      expect(reducerFn(givenState, givenAction)).toEqual(expectedState);
+    });
+
+    it('triggers the callback on the right action with the whole action', () => {
+      const expectedAction = faker.hacker.noun();
+
+      const listKey = faker.lorem.word();
+      const mapKey = faker.lorem.word();
+      const newKey = faker.lorem.word();
+
+      const valueKey = faker.lorem.word();
+      const value = faker.hacker.phrase();
+      const givenAction = {
+        type: expectedAction,
+        [valueKey]: value,
       };
 
       const callback = (state, payload) => state.setIn([mapKey, newKey], payload[valueKey]);

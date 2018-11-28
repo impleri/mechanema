@@ -19,7 +19,7 @@ type SliceMethod = (
  *                                            if received expected action.
  * @return {ReducerMethod}                    Standard reducer function.
  */
-export function createReducer(
+export default function createReducer(
   onAction: string,
   stateFn: SliceMethod,
 ): ReducerMethod {
@@ -30,20 +30,4 @@ export function createReducer(
 
     return state;
   };
-}
-
-type CreateReducerMethod = (onAction: string, stateFn: SliceMethod) => ReducerMethod;
-
-/**
- * Create Reducer Factory
- *
- * Factory method to inject a single initial state into multiple calls to
- * createReducer.
- * @param {Immutable.Collection} initialState Initial state to use for reducer
- *                                            methods.
- * @return {function}                         Curried proxy to createReducer.
- * @deprecated
- */
-export default function createReducerFactory(): CreateReducerMethod {
-  return (onAction, stateFn) => createReducer(onAction, stateFn);
 }

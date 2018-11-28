@@ -156,26 +156,10 @@ function createReducer(
   };
 }
 
-
-/**
- * Create Reducer Factory
- *
- * Factory method to inject a single initial state into multiple calls to
- * createReducer.
- * @param {Immutable.Collection} initialState Initial state to use for reducer
- *                                            methods.
- * @return {function}                         Curried proxy to createReducer.
- * @deprecated
- */
-function createReducerFactory() {
-  return (onAction, stateFn) => createReducer(onAction, stateFn);
-}
-
 exports.createRootReducer = createRootReducer;
-exports.createReducerFactory = createReducerFactory;
+exports.createReducer = createReducer;
 exports.registerReducer = registerReducer;
 exports.registerStateMachine = registerStateMachine;
-exports.createReducer = createReducer;
 exports.INIT = INIT;
 exports.KEY_STATE = KEY_STATE;
 exports.traverseReducerArray = traverseReducerArray;
