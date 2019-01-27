@@ -23,8 +23,8 @@ describe('createSelector', () => {
       const givenSelectorFn = jest.fn();
 
       expect(createSelector(givenSelectorFn)).toEqual(givenSelectorFn);
-      expect(moize).toBeCalledWith(givenSelectorFn);
-      expect(moize.maxArgs).not.toBeCalled();
+      expect(moize).toHaveBeenCalledWith(givenSelectorFn);
+      expect(moize.maxArgs).not.toHaveBeenCalled();
     });
 
     it('does not memoize an already-memoized method', () => {
@@ -42,7 +42,7 @@ describe('createSelector', () => {
       const receivedSelector = createSelector(givenSelectorFn);
 
       expect(receivedSelector(Map())).toEqual(givenSelectorFn);
-      expect(moize.maxArgs).toBeCalledWith(0);
+      expect(moize.maxArgs).toHaveBeenCalledWith(0);
       expect(moize).toBeCalled();
     });
   });
@@ -60,10 +60,10 @@ describe('createSelector', () => {
 
       expect(receivedSelector).not.toEqual(givenSelectorFn);
       expect(receivedValue).toEqual(expectedReturn);
-      expect(moize).toBeCalledWith(givenDependency);
-      expect(moize).toBeCalledWith(givenSelectorFn);
-      expect(givenDependency).toBeCalledWith(givenState);
-      expect(givenSelectorFn).toBeCalledWith(givenReturn);
+      expect(moize).toHaveBeenCalledWith(givenDependency);
+      expect(moize).toHaveBeenCalledWith(givenSelectorFn);
+      expect(givenDependency).toHaveBeenCalledWith(givenState);
+      expect(givenSelectorFn).toHaveBeenCalledWith(givenReturn);
       expect(moize.maxArgs).not.toBeCalled();
     });
   });
@@ -81,10 +81,10 @@ describe('createSelector', () => {
 
       expect(receivedSelector).not.toEqual(givenSelectorFn);
       expect(receivedValue).toEqual(expectedReturn);
-      expect(moize).toBeCalledWith(givenDependency);
-      expect(moize).toBeCalledWith(givenSelectorFn);
-      expect(givenDependency).toBeCalledWith(givenState);
-      expect(givenSelectorFn).toBeCalledWith(givenReturn);
+      expect(moize).toHaveBeenCalledWith(givenDependency);
+      expect(moize).toHaveBeenCalledWith(givenSelectorFn);
+      expect(givenDependency).toHaveBeenCalledWith(givenState);
+      expect(givenSelectorFn).toHaveBeenCalledWith(givenReturn);
       expect(moize.maxArgs).not.toBeCalled();
     });
   });
@@ -108,8 +108,8 @@ describe('createSelector', () => {
       expect(receivedSelector).not.toEqual(givenSelectorFn);
       expect(receivedValue).toEqual(givenReturn);
       expect(moize).toHaveBeenCalledTimes(2);
-      expect(moize).toBeCalledWith(givenSelectorFn);
-      expect(givenSelectorFn).toBeCalledWith(givenSliceState);
+      expect(moize).toHaveBeenCalledWith(givenSelectorFn);
+      expect(givenSelectorFn).toHaveBeenCalledWith(givenSliceState);
       expect(moize.maxArgs).not.toBeCalled();
     });
   });

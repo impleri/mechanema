@@ -13,7 +13,7 @@ describe('aggregation functions', () => {
   describe('createRootReducer', () => {
     it('returns a root reducer method', () => {
       createRootReducer();
-      expect(combineReducers).toBeCalledWith(expect.any(Object));
+      expect(combineReducers).toHaveBeenCalledWith(expect.any(Object));
     });
   });
 
@@ -27,7 +27,7 @@ describe('aggregation functions', () => {
         createRootReducer();
       }).not.toThrow();
 
-      expect(combineReducers).toBeCalledWith({
+      expect(combineReducers).toHaveBeenCalledWith({
         [givenNamespace]: givenReducer,
       });
     });
@@ -59,8 +59,8 @@ describe('aggregation functions', () => {
         createRootReducer();
       }).not.toThrow();
 
-      expect(createStateMachine).toBeCalledWith(givenMachineHash, expect.any(Collection));
-      expect(combineReducers).toBeCalledWith(expect.objectContaining({
+      expect(createStateMachine).toHaveBeenCalledWith(givenMachineHash, expect.any(Collection));
+      expect(combineReducers).toHaveBeenCalledWith(expect.objectContaining({
         [givenNamespace]: expectedReducer,
       }));
     });

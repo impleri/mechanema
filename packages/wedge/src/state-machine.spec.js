@@ -117,7 +117,7 @@ describe('state machine functions', () => {
 
       const receivedState = reducer();
 
-      expect(testHash[INIT]).toBeCalledWith(expectedState, undefined);
+      expect(testHash[INIT]).toHaveBeenCalledWith(expectedState, undefined);
       expect(testHash[otherState]).not.toBeCalled();
       expect(receivedState.equals(expectedState)).toBe(true);
     });
@@ -130,7 +130,7 @@ describe('state machine functions', () => {
 
       const receivedState = reducer();
 
-      expect(testHash[INIT]).toBeCalledWith(initialState, undefined);
+      expect(testHash[INIT]).toHaveBeenCalledWith(initialState, undefined);
       expect(testHash[otherState]).not.toBeCalled();
       expect(receivedState.equals(initialState)).toBe(true);
     });
@@ -146,7 +146,7 @@ describe('state machine functions', () => {
 
       reducer(givenState, givenAction);
 
-      expect(testHash[INIT]).toBeCalledWith(givenState, givenAction);
+      expect(testHash[INIT]).toHaveBeenCalledWith(givenState, givenAction);
       expect(testHash[otherState]).not.toBeCalled();
     });
 
@@ -163,7 +163,7 @@ describe('state machine functions', () => {
 
       reducer(givenState, givenAction);
 
-      expect(testHash[otherState]).toBeCalledWith(givenState, givenAction);
+      expect(testHash[otherState]).toHaveBeenCalledWith(givenState, givenAction);
       expect(testHash[INIT]).not.toBeCalled();
     });
 
@@ -176,7 +176,7 @@ describe('state machine functions', () => {
 
       reducer(givenState, givenAction);
 
-      expect(testHash[expectedState]).toBeCalledWith(givenState, givenAction);
+      expect(testHash[expectedState]).toHaveBeenCalledWith(givenState, givenAction);
       expect(testHash[INIT]).not.toBeCalled();
     });
 
@@ -191,7 +191,7 @@ describe('state machine functions', () => {
       const reducer = createStateMachine(testHash);
       reducer(givenState, givenAction);
 
-      expect(expectedCallback).toBeCalledWith(givenState, givenAction);
+      expect(expectedCallback).toHaveBeenCalledWith(givenState, givenAction);
       expect(testHash[INIT]).not.toBeCalled();
     });
   });
