@@ -17,7 +17,7 @@
     "eslint-plugin-import": "^2.14",
     "eslint-plugin-jest": "^22.1.0",
     "faker": "^4.1.0",
-    "flow-bin": "^0.87.0",
+    "flow-bin": "^0.91.0",
     "immutable": "^4.0.0-rc.9",
     "jest": "^23.6.0",
     "lerna": "^3.2",
