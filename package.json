@@ -35,7 +35,8 @@
     "lint": "eslint . --ext js,jsx,ts,tsx",
     "pretest": "npm run lint",
     "test": "npm run testonly",
-    "testonly": "jest"
+    "testonly": "jest",
+    "release": "echo 'Should create a publish script here'"
   },
   "workspaces": [
     "packages/*"
