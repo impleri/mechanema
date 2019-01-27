@@ -22,8 +22,8 @@ describe('getStateSelector', () => {
     getStateSelector(givenNamespace);
     createSelector.mock.calls[0][1](givenState);
 
-    expect(createSelector).toBeCalledWith(givenNamespace, expect.any(Function));
-    expect(givenState.get).toBeCalledWith(KEY_STATE, INIT);
+    expect(createSelector).toHaveBeenCalledWith(givenNamespace, expect.any(Function));
+    expect(givenState.get).toHaveBeenCalledWith(KEY_STATE, INIT);
   });
 
   it('wraps createSelector with custom args', () => {
@@ -38,7 +38,7 @@ describe('getStateSelector', () => {
     getStateSelector(givenNamespace, givenStateKey, givenInitState);
     createSelector.mock.calls[0][1](givenState);
 
-    expect(createSelector).toBeCalledWith(givenNamespace, expect.any(Function));
-    expect(givenState.get).toBeCalledWith(givenStateKey, givenInitState);
+    expect(createSelector).toHaveBeenCalledWith(givenNamespace, expect.any(Function));
+    expect(givenState.get).toHaveBeenCalledWith(givenStateKey, givenInitState);
   });
 });
