@@ -2,5 +2,9 @@
   "extends": [
     "config:base",
     ":pinOnlyDevDependencies"
-  ]
+  ],
+  "automerge": true,
+  "major": {
+    "automerge": false
+  }
 }
