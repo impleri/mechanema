@@ -956,7 +956,7 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
   integrity sha512-ReZxvNHIOv88FlT7rxcXIIC0fPt4KZqZbOlivyWtXLt8ESx84zd3kMC6iK5jVeS2qt+g7ftS7ye4fi06X5rtRQ==
 
-babel-cli@^6.26.0:
+babel-cli@6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-cli/-/babel-cli-6.26.0.tgz#502ab54874d7db88ad00b887a06383ce03d002f1"
   integrity sha1-UCq1SHTX24itALiHoGODzgPQAvE=
@@ -1012,7 +1012,7 @@ babel-core@^6.0.0, babel-core@^6.26.0:
     slash "^1.0.0"
     source-map "^0.5.7"
 
-babel-eslint@^10.0.1:
+babel-eslint@10.0.1:
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-10.0.1.tgz#919681dc099614cd7d31d45c8908695092a1faed"
   integrity sha512-z7OT1iNV+TjOwHNLLyJk+HN+YVWX+CLE6fPD2SymJZOZQBs+QIexFjhm4keGTm8MW9xr4EC9Q0PbaLB24V5GoQ==
@@ -1453,7 +1453,7 @@ babel-polyfill@^6.26.0:
     core-js "^2.5.0"
     regenerator-runtime "^0.10.5"
 
-babel-preset-env@^1.7.0:
+babel-preset-env@1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/babel-preset-env/-/babel-preset-env-1.7.0.tgz#dea79fa4ebeb883cd35dab07e260c1c9c04df77a"
   integrity sha512-9OR2afuKDneX2/q2EurSftUYM0xGu4O2D9adAhVfADDhrYDaxXV0rBbevVYoY9n6nyX1PmQW/0jtpJvUNr9CHg==
@@ -1489,7 +1489,7 @@ babel-preset-env@^1.7.0:
     invariant "^2.2.2"
     semver "^5.3.0"
 
-babel-preset-flow@^6.23.0:
+babel-preset-flow@6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-preset-flow/-/babel-preset-flow-6.23.0.tgz#e71218887085ae9a24b5be4169affb599816c49d"
   integrity sha1-5xIYiHCFrpoktb5Baa/7WZgWxJ0=
@@ -2514,7 +2514,7 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-airbnb-base@^13.1:
+eslint-config-airbnb-base@13.1.0:
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-13.1.0.tgz#b5a1b480b80dfad16433d6c4ad84e6605052c05c"
   integrity sha512-XWwQtf3U3zIoKO1BbHh6aUhJZQweOwSt4c2JrPDg9FP3Ltv3+YfEv7jIDB8275tVnO/qOHbfuYg3kzw6Je7uWw==
@@ -2539,14 +2539,14 @@ eslint-module-utils@^2.2.0:
     debug "^2.6.8"
     pkg-dir "^1.0.0"
 
-eslint-plugin-flowtype@^3.0:
+eslint-plugin-flowtype@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-3.2.0.tgz#824364ed5940a404b91326fdb5a313a2a74760df"
   integrity sha512-baJmzngM6UKbEkJ5OY3aGw2zjXBt5L2QKZvTsOlXX7yHKIjNRrlJx2ods8Rng6EdqPR9rVNIQNYHpTs0qfn2qA==
   dependencies:
     lodash "^4.17.10"
 
-eslint-plugin-import@^2.14:
+eslint-plugin-import@2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.14.0.tgz#6b17626d2e3e6ad52cfce8807a845d15e22111a8"
   integrity sha512-FpuRtniD/AY6sXByma2Wr0TXvXJ4nA/2/04VPlfpmUDPOpOY264x+ILiwnrk/k4RINgDAyFZByxqPUbSQ5YE7g==
@@ -2562,7 +2562,7 @@ eslint-plugin-import@^2.14:
     read-pkg-up "^2.0.0"
     resolve "^1.6.0"
 
-eslint-plugin-jest@^22.1.0:
+eslint-plugin-jest@22.1.0:
   version "22.1.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-22.1.0.tgz#9a4dfa3367563e8301560a7fb92ec309096dbca3"
   integrity sha512-WcQd5LxEoAS20zuWEAd8CX0pVC+gGInZPcsoYvK5w7BrEJNmltyTxYYh1r0ct4GsahD2GvNySlcTcLtK2amFZA==
@@ -2598,7 +2598,7 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint@^5.6.1:
+eslint@5.9.0:
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.9.0.tgz#b234b6d15ef84b5849c6de2af43195a2d59d408e"
   integrity sha512-g4KWpPdqN0nth+goDNICNXGfJF7nNnepthp46CAlJoJtC5K/cLu3NgCM3AHu1CkJ5Hzt9V0Y0PBAO6Ay/gGb+w==
@@ -2840,7 +2840,7 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
-faker@^4.1.0:
+faker@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
   integrity sha1-HkW7vsxndLPBlfrSg1EJxtdIzD8=
@@ -2975,7 +2975,7 @@ flat-cache@^1.2.1:
     rimraf "~2.6.2"
     write "^0.2.1"
 
-flow-bin@^0.87.0:
+flow-bin@0.87.0:
   version "0.87.0"
   resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.87.0.tgz#fab7f984d8cc767e93fa9eb01cf7d57ed744f19d"
   integrity sha512-mnvBXXZkUp4y6A96bR5BHa3q1ioIIN2L10w5osxJqagAakTXFYZwjl0t9cT3y2aCEf1wnK6n91xgYypQS/Dqbw==
@@ -3452,7 +3452,7 @@ ignore@^4.0.6:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
-immutable@^4.0.0-rc.9:
+immutable@4.0.0-rc.12:
   version "4.0.0-rc.12"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
   integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
@@ -4242,7 +4242,7 @@ jest-worker@^23.2.0:
   dependencies:
     merge-stream "^1.0.1"
 
-jest@^23.6.0:
+jest@23.6.0:
   version "23.6.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-23.6.0.tgz#ad5835e923ebf6e19e7a1d7529a432edfee7813d"
   integrity sha512-lWzcd+HSiqeuxyhG+EnZds6iO3Y3ZEnMrfZq/OTGvF/C+Z4fPMCdhWTGSAiO2Oym9rbEXfwddHhh6jqrTF3+Lw==
@@ -4420,7 +4420,7 @@ left-pad@^1.3.0:
   resolved "https://registry.yarnpkg.com/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"
   integrity sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQGinBN9yTQT3bFlCBy/aVx2HrNcqQGsdot8ghrjyrvMCoEA==
 
-lerna@^3.2:
+lerna@3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/lerna/-/lerna-3.5.1.tgz#350b24b58fc2d7bc2c1e1f4ef3058afe827cfa68"
   integrity sha512-0AyxMr2UpR3RAJsyrfNtYvfcI01YVSSnbRdzum7frZAtb7S+8NSY2ip7aDbN6/YsQK2K/zOCQ4shu/nwgub8aw==
@@ -4836,7 +4836,7 @@ modify-values@^1.0.0:
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-moize@^5.4.1:
+moize@5.4.1, moize@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/moize/-/moize-5.4.1.tgz#664a1a6856bd8dfe0ceda72f17e6765ff5910243"
   integrity sha512-wRVMg+7tOBOkcoDI5MS+mReO4oI7pd6LshRR4l9AdRY49vCC3v6xzgo2bUjHDZzU0FyG35rmTFs+csGbfpwk6w==
@@ -5826,17 +5826,17 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-redux-immutable@^4.0.0:
+redux-immutable@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/redux-immutable/-/redux-immutable-4.0.0.tgz#3a1a32df66366462b63691f0e1dc35e472bbc9f3"
   integrity sha1-Ohoy32Y2ZGK2NpHw4dw15HK7yfM=
 
-redux-saga@^0.16.2:
+redux-saga@0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.2.tgz#993662e86bc945d8509ac2b8daba3a8c615cc971"
   integrity sha512-iIjKnRThI5sKPEASpUvySemjzwqwI13e3qP7oLub+FycCRDysLSAOwt958niZW6LhxfmS6Qm1BzbU70w/Koc4w==
 
-redux@^4.0:
+redux@4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
   integrity sha512-R7bAtSkk7nY6O/OYMVR9RiBI+XghjF9rlbl5806HJbQph0LJVHZrU5oaO4q70eUKiqMRqm4y07KLTlMZ2BlVmg==
@@ -6055,7 +6055,7 @@ rimraf@2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@~2.6.2:
   dependencies:
     glob "^7.0.5"
 
-rollup-plugin-flow@^1.1.1:
+rollup-plugin-flow@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-flow/-/rollup-plugin-flow-1.1.1.tgz#6ce568f1dd559666b77ab76b4bae251407528db6"
   integrity sha1-bOVo8d1Vlma3erdrS64lFAdSjbY=
@@ -6071,7 +6071,7 @@ rollup-pluginutils@^1.5.1:
     estree-walker "^0.2.1"
     minimatch "^3.0.2"
 
-rollup@^0.67.0:
+rollup@0.67.3:
   version "0.67.3"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.67.3.tgz#55475b1b62c43220c3b4bd7edc5846233932f50b"
   integrity sha512-TyNQCz97rKuVVbsKUTXfwIjV7UljWyTVd7cTMuE+aqlQ7WJslkYF5QaYGjMLR2BlQtUOO5CAxSVnpQ55iYp5jg==
