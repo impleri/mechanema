@@ -20,7 +20,7 @@
     "flow-bin": "0.92.1",
     "immutable": "4.0.0-rc.12",
     "jest": "23.6.0",
-    "lerna": "3.10.8",
+    "lerna": "3.11.0",
     "moize": "5.4.1",
     "redux": "4.0.1",
     "redux-immutable": "4.0.0",
