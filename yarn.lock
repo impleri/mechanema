@@ -4497,7 +4497,15 @@ modify-values@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
 
-moize@5.4.1, moize@^5.4.1:
+moize@5.4.2:
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/moize/-/moize-5.4.2.tgz#cf6b17aea2b9e1483c99baca448d8563d78079d6"
+  dependencies:
+    fast-equals "^1.6.0"
+    fast-stringify "^1.1.0"
+    micro-memoize "^2.1.1"
+
+moize@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/moize/-/moize-5.4.1.tgz#664a1a6856bd8dfe0ceda72f17e6765ff5910243"
   dependencies:
