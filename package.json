@@ -24,7 +24,7 @@
     "moize": "5.4.2",
     "redux": "4.0.1",
     "redux-immutable": "4.0.0",
-    "redux-saga": "1.0.1",
+    "redux-saga": "1.0.2",
     "rollup": "0.68.2",
     "rollup-plugin-flow": "1.1.1"
   },
