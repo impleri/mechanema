@@ -1,15 +1,22 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import faker from 'faker';
-import { List, Map } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
+import { Action, Reducer } from 'redux';
 
-const {
+import {
   createStateMachine,
   INIT,
   KEY_STATE,
+  IStateMachineHash,
   traverseReducerArray,
-} = require('./state-machine');
+} from './state-machine';
+
+import faker = require('faker');
 
 describe('state machine functions', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe('Initial constants', () => {
     it('are exported', () => {
       expect(`${INIT}`.length).toBeGreaterThan(0);
@@ -38,13 +45,13 @@ describe('state machine functions', () => {
         faker.lorem.sentence(),
       ];
 
-      const expectedState = initialState.mergeDeep(Map({
+      const expectedState = initialState.mergeDeep(fromJS({
         [KEY_STATE]: newState,
         [listKey]: List(firstAdditions),
         [anotherKey]: anotherValue,
       }));
 
-      const reducers = [
+      const reducers: Reducer[] = [
         (state, action) => {
           if (action.type === expectedAction) {
             return state.mergeDeep(Map({
@@ -58,7 +65,7 @@ describe('state machine functions', () => {
         (state, action) => {
           if (action.type === faker.lorem.slug()) {
             return state.merge(Map({
-              [KEY_STATE]: faker.business.name(),
+              [KEY_STATE]: faker.random.words(),
               [listKey]: List([]),
             }));
           }
@@ -88,15 +95,19 @@ describe('state machine functions', () => {
   });
 
   describe('createStateMachine', () => {
-    let testHash;
+    let testHash: IStateMachineHash;
     let givenState = Map();
-    let givenAction;
+    let givenAction: Action;
     const initialState = Map({
       [faker.random.word()]: faker.lorem.paragraph(),
     });
 
     beforeEach(() => {
-      givenState = Map();
+      jest.resetAllMocks();
+
+      givenState = Map({
+        [faker.random.word()]: faker.random.words(),
+      });
 
       givenAction = {
         type: faker.random.word(),
@@ -111,15 +122,13 @@ describe('state machine functions', () => {
       const otherState = faker.random.word();
       testHash[otherState] = jest.fn(state => state);
 
-      const expectedState = Map();
-
       const reducer = createStateMachine(testHash);
 
-      const receivedState = reducer();
+      const receivedState = reducer(initialState, givenAction);
 
-      expect(testHash[INIT]).toHaveBeenCalledWith(expectedState, undefined);
-      expect(testHash[otherState]).not.toBeCalled();
-      expect(receivedState.equals(expectedState)).toBe(true);
+      expect(testHash[INIT]).toHaveBeenCalledWith(initialState, givenAction);
+      expect(testHash[otherState]).not.toHaveBeenCalled();
+      expect(receivedState.equals(initialState)).toBe(true);
     });
 
     it('returns the given initial state if none provided', () => {
@@ -128,10 +137,10 @@ describe('state machine functions', () => {
 
       const reducer = createStateMachine(testHash, initialState);
 
-      const receivedState = reducer();
+      const receivedState = reducer(initialState, givenAction);
 
-      expect(testHash[INIT]).toHaveBeenCalledWith(initialState, undefined);
-      expect(testHash[otherState]).not.toBeCalled();
+      expect(testHash[INIT]).toHaveBeenCalledWith(initialState, givenAction);
+      expect(testHash[otherState]).not.toHaveBeenCalled();
       expect(receivedState.equals(initialState)).toBe(true);
     });
 
@@ -147,7 +156,7 @@ describe('state machine functions', () => {
       reducer(givenState, givenAction);
 
       expect(testHash[INIT]).toHaveBeenCalledWith(givenState, givenAction);
-      expect(testHash[otherState]).not.toBeCalled();
+      expect(testHash[otherState]).not.toHaveBeenCalled();
     });
 
     it('uses the given fallback reducer method if given state property is not matched', () => {
@@ -164,7 +173,7 @@ describe('state machine functions', () => {
       reducer(givenState, givenAction);
 
       expect(testHash[otherState]).toHaveBeenCalledWith(givenState, givenAction);
-      expect(testHash[INIT]).not.toBeCalled();
+      expect(testHash[INIT]).not.toHaveBeenCalled();
     });
 
     it('uses the reducer method associated with the current state', () => {
@@ -177,9 +186,8 @@ describe('state machine functions', () => {
       reducer(givenState, givenAction);
 
       expect(testHash[expectedState]).toHaveBeenCalledWith(givenState, givenAction);
-      expect(testHash[INIT]).not.toBeCalled();
+      expect(testHash[INIT]).not.toHaveBeenCalled();
     });
-
 
     it('uses traverseReducerArray if reducer method is an array', () => {
       const expectedState = faker.hacker.noun();
@@ -192,7 +200,7 @@ describe('state machine functions', () => {
       reducer(givenState, givenAction);
 
       expect(expectedCallback).toHaveBeenCalledWith(givenState, givenAction);
-      expect(testHash[INIT]).not.toBeCalled();
+      expect(testHash[INIT]).not.toHaveBeenCalled();
     });
   });
 });

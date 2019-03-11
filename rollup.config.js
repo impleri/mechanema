@@ -1,9 +1,22 @@
-import flow from 'rollup-plugin-flow';
 import path from 'path';
+import typescript from 'rollup-plugin-typescript2';
 
 const packageRootDir = process.cwd();
-const inputFile = path.join(packageRootDir, 'src/index.js');
+const inputFile = path.join(packageRootDir, 'src/index.ts');
 const pkg = require(path.join(packageRootDir, 'package.json'));
+
+const overrides = {
+  compilerOptions: {
+    declarationDir: path.join(packageRootDir, '..'),
+  },
+  include: [
+    path.join(packageRootDir, 'src')
+  ],
+  exclude: [
+    path.join(packageRootDir, '..', '..', 'node_modules'),
+    "**/*.spec.ts"
+  ]
+};
 
 export default {
   input: inputFile,
@@ -13,6 +26,7 @@ export default {
     'redux',
     'redux-immutable',
     'redux-saga',
+    'redux-saga/effects',
     '@mechanema/wedge'
   ],
   output: [
@@ -26,8 +40,10 @@ export default {
     },
   ],
   plugins: [
-    flow({
-      pretty: true,
+    typescript({
+      tsconfig: path.resolve(packageRootDir, '../../tsconfig.json'),
+      useTsconfigDeclarationDir: true,
+      tsconfigOverride: overrides
     }),
   ]
 };

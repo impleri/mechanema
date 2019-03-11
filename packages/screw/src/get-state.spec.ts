@@ -1,11 +1,12 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import faker from 'faker';
 import { INIT, KEY_STATE } from '@mechanema/wedge';
-import getStateSelector from './get-state';
-import createSelector from './selector';
+import { getStateSelector } from './get-state';
+
+import { createSelector } from './selector';
+
+import faker = require('faker');
 
 jest.unmock('immutable');
-jest.mock('./selector', () => jest.fn());
+jest.mock('./selector');
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -20,7 +21,7 @@ describe('getStateSelector', () => {
     };
 
     getStateSelector(givenNamespace);
-    createSelector.mock.calls[0][1](givenState);
+    (createSelector as jest.Mock).mock.calls[0][1](givenState);
 
     expect(createSelector).toHaveBeenCalledWith(givenNamespace, expect.any(Function));
     expect(givenState.get).toHaveBeenCalledWith(KEY_STATE, INIT);
@@ -36,7 +37,7 @@ describe('getStateSelector', () => {
     };
 
     getStateSelector(givenNamespace, givenStateKey, givenInitState);
-    createSelector.mock.calls[0][1](givenState);
+    (createSelector as jest.Mock).mock.calls[0][1](givenState);
 
     expect(createSelector).toHaveBeenCalledWith(givenNamespace, expect.any(Function));
     expect(givenState.get).toHaveBeenCalledWith(givenStateKey, givenInitState);

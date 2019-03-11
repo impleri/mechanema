@@ -1,10 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import faker from 'faker';
 import { Collection } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
-import createRootReducer, { registerReducer, registerStateMachine } from './aggregator';
+import { createRootReducer, registerReducer, registerStateMachine } from './aggregator';
 import { createStateMachine } from './state-machine';
+
+import faker = require('faker');
 
 jest.mock('redux-immutable');
 jest.mock('./state-machine');
@@ -46,13 +47,13 @@ describe('aggregation functions', () => {
   describe('registerStateMachine', () => {
     it('creates the state machine and adds it to the internal registry', () => {
       const givenMachineHash = {
-        [faker.random.word]: jest.fn(),
+        [faker.random.word()]: jest.fn(),
       };
       const givenNamespace = faker.random.word();
 
       const expectedReducer = jest.fn();
 
-      createStateMachine.mockImplementation(() => expectedReducer);
+      (createStateMachine as jest.Mock).mockImplementation(() => expectedReducer);
 
       expect(() => {
         registerStateMachine(givenNamespace, givenMachineHash);
