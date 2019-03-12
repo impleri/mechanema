@@ -15,11 +15,12 @@ export interface IAggregator {
   (...parameters: any): any;
 }
 
+type selectorFnType = ISelector | IConstant
+
 export function getSlice(namespace: string): ISelector {
   return (state: Collection<any, any>): Map<any, any> => state.get(namespace, Map());
 }
 
-type selectorFnType = ISelector | IConstant
 function createSimpleSelector(selectorFn: selectorFnType): ISelector {
   if (typeof selectorFn === 'function') {
     // Already memoized
@@ -56,8 +57,8 @@ function createComplexSelector(
 }
 
 export function createSelector(
-  mixedParam: ISelector | selectorFnType[] | any,
-  selectorFn?: ISelector,
+  mixedParam: selectorFnType | selectorFnType[] | any,
+  selectorFn?: selectorFnType,
 ): ISelector {
   let selector: ISelector = (): any => {};
 

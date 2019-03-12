@@ -10,7 +10,7 @@ export interface IConstant {
 export interface IAggregator {
     (...parameters: any): any;
 }
-export declare function getSlice(namespace: string): ISelector;
 declare type selectorFnType = ISelector | IConstant;
-export declare function createSelector(mixedParam: ISelector | selectorFnType[] | any, selectorFn?: ISelector): ISelector;
+export declare function getSlice(namespace: string): ISelector;
+export declare function createSelector(mixedParam: selectorFnType | selectorFnType[] | any, selectorFn?: selectorFnType): ISelector;
 export {};

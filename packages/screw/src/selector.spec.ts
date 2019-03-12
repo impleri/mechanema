@@ -6,16 +6,14 @@ import { createSelector, ISelector } from './selector';
 import faker = require('faker');
 
 jest.unmock('immutable');
-jest.mock('moize', () => {
-  const mockFn = jest.fn(given => given);
-  (mockFn as any).maxArgs = jest.fn(() => mockFn);
-
-  return mockFn;
-});
+jest.mock('moize');
 jest.mock('@mechanema/wedge');
 
 beforeEach(() => {
   jest.clearAllMocks();
+
+  (moize as any).mockImplementation((given: Function) => given);
+  (moize.maxArgs as jest.Mock).mockImplementation(() => moize);
 });
 
 describe('createSelector', () => {
