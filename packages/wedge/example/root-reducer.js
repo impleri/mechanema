@@ -1,6 +1,5 @@
-import {
-  createRootReducer,
-} from '../dist/wedge';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { createRootReducer } from '@mechanema/wedge';
 
 // Register all the reducers
 import './my-reducer';

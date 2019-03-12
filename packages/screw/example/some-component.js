@@ -1,5 +1,7 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { bindSelectors } from '@mechanema/screw';
+
 import * as selectors from './my-selector';
-import { bindSelectors } from '../dist/screw';
 
 const connect = () => {}; // import { connect } from 'react-redux';
 
