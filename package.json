@@ -40,6 +40,7 @@
     "packages/*"
   ],
   "jest": {
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "packages/*/src/**/*.{js,jsx}",
       "!<rootDir>/node_modules/"
