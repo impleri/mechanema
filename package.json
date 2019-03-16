@@ -44,6 +44,8 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "packages/*/src/**/*.{js,jsx,ts,tsx}",
+      "!packages/*/src/**/*.spec.{js,jsx,ts,tsx}",
+      "!packages/*/src/**/*.d.{ts,tsx}",
       "!<rootDir>/node_modules/"
     ],
     "preset": "ts-jest"
