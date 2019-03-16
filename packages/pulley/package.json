@@ -11,6 +11,7 @@
   "license": "MIT",
   "main": "dist/pulley.es5.js",
   "module": "dist/pulley.js",
+  "types": "src/index.d.ts",
   "publishConfig": {
     "access": "public"
   },

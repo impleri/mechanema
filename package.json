@@ -7,31 +7,32 @@
   "author": "Christopher Roussel <christopher@impleri.net>",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-eslint": "10.0.1",
-    "babel-preset-env": "1.7.0",
-    "babel-preset-flow": "6.23.0",
+    "@types/faker": "^4.1.5",
+    "@types/jest": "24.0.11",
+    "@types/redux-immutable": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "^1.2.0",
     "eslint": "5.15.1",
     "eslint-config-airbnb-base": "13.1.0",
-    "eslint-plugin-flowtype": "3.4.1",
+    "eslint-import-resolver-typescript": "^1.1.1",
     "eslint-plugin-import": "2.16.0",
     "eslint-plugin-jest": "22.3.0",
     "faker": "4.1.0",
-    "flow-bin": "0.94.0",
     "immutable": "4.0.0-rc.12",
-    "jest": "23.6.0",
+    "jest": "24.5.0",
     "lerna": "3.13.0",
     "moize": "5.4.2",
     "redux": "4.0.1",
     "redux-immutable": "4.0.0",
     "redux-saga": "1.0.2",
     "rollup": "0.68.2",
-    "rollup-plugin-flow": "1.1.1"
+    "rollup-plugin-typescript2": "0.20.1",
+    "ts-jest": "24.0.0",
+    "tslib": "^1.9.3",
+    "typescript": "~3.2.1"
   },
   "scripts": {
     "build": "lerna exec -- rollup -c ../../rollup.config.js",
-    "build:flow": "lerna exec -- flow gen-flow-files src --out-dir dist",
-    "lint": "eslint .",
+    "lint": "eslint . --ext js,jsx,ts,tsx",
     "pretest": "npm run lint",
     "test": "npm run testonly",
     "testonly": "jest"
@@ -42,8 +43,11 @@
   "jest": {
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "packages/*/src/**/*.{js,jsx}",
+      "packages/*/src/**/*.{js,jsx,ts,tsx}",
+      "!packages/*/src/**/*.spec.{js,jsx,ts,tsx}",
+      "!packages/*/src/**/*.d.{ts,tsx}",
       "!<rootDir>/node_modules/"
-    ]
+    ],
+    "preset": "ts-jest"
   }
 }

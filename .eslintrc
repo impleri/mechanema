@@ -1,22 +1,46 @@
 {
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "useJSXTextNode": true,
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "./"
+  },
   "extends": [
-    "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
     "plugin:jest/recommended",
-    "plugin:flowtype/recommended"
+    "airbnb-base"
+  ],
+  "plugins": [
+    "jest",
+    "@typescript-eslint"
   ],
   "env": {
     "jest/globals": true
   },
-  "plugins": [
-    "jest",
-    "flowtype"
-  ],
   "rules": {
-    "import/no-extraneous-dependencies": "warn"
+    "import/no-extraneous-dependencies": "warn",
+    "indent": "off",
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
+    "@typescript-eslint/interface-name-prefix": [
+      "error",
+      "always"
+    ]
   },
   "settings": {
-    "flowtype": {
-      "onlyFilesWithFlowAnnotation": true
+    "import/parsers": {
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
+    },
+    "import/resolver": {
+      "typescript": {}
     }
   }
 }

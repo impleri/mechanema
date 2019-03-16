@@ -1,13 +1,17 @@
-// @flow strict
+import { Map } from 'immutable';
+import { Action, Reducer } from 'redux';
 
-import type { Collection } from 'immutable';
-import type { Action, ReducerMethod } from './state-machine';
+export interface IReducerSlice {
+  (
+    state: Map<any, any>,
+    payload: Action | any,
+    action: Action,
+  ): Map<any, any>;
+}
 
-type SliceMethod = (
-  state: Collection<any, any>,
-  payload: Collection<any, any> | Action,
-  action: Action,
-) => Collection<any, any>;
+export interface IPayloadAction extends Action {
+  payload?: any;
+}
 
 /**
  * Create Reducer
@@ -17,13 +21,13 @@ type SliceMethod = (
  * @param {string}               onAction     Expected redux action.
  * @param {SliceCallback}        stateFn      Callback to trigger state change
  *                                            if received expected action.
- * @return {ReducerMethod}                    Standard reducer function.
+ * @return {Reducer}                          Standard reducer function.
  */
-export default function createReducer(
+export function createReducer(
   onAction: string,
-  stateFn: SliceMethod,
-): ReducerMethod {
-  return (state: Collection<any, any>, action: ?Action): Collection<any, any> => {
+  stateFn: IReducerSlice,
+): Reducer {
+  return (state: Map<any, any>, action: IPayloadAction): Map<any, any> => {
     if (action && action.type === onAction) {
       return stateFn(state, action.payload || action, action);
     }

@@ -1,10 +1,11 @@
 import { fromJS, List } from 'immutable';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   INIT,
   KEY_STATE,
   createReducer,
   registerStateMachine,
-} from '../dist/wedge';
+} from '@mechanema/wedge';
 
 // First define (or import) some action and state constants
 const SLICE_NAMESPACE = 'TODOS';

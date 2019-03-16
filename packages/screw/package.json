@@ -11,6 +11,7 @@
   "license": "MIT",
   "main": "dist/screw.es5.js",
   "module": "dist/screw.js",
+  "types": "src/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
