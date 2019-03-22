@@ -4,8 +4,8 @@ node_js:
   - 10
   - 8
 stages:
-  - test
   - build
+  - test
   - name: deploy
     if: branch = master
 cache:
@@ -18,10 +18,10 @@ before_script:
   - ./cc-test-reporter before-build
 jobs:
   include:
-    - stage: test
-      script: yarn test
     - stage: build
       script: yarn build
+    - stage: test
+      script: yarn test
     - stage: deploy
       node_js: node
       script: yarn release
