@@ -1,11 +1,16 @@
 language: node_js
-node_js:
-  - node
-  - 10
-  - 8
 branches:
   only:
   - master
+node_js:
+  - node
+  - "10"
+  - "8"
+stages:
+  - build
+  - test
+  - name: deploy
+    if: branch = master
 cache:
   yarn: true
   directories:
@@ -14,8 +19,15 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-script:
-- yarn test
-- yarn build
+jobs:
+  include:
+    - stage: build
+      script: yarn build
+    - stage: test
+      script: yarn test
+    - stage: deploy
+      node_js: node
+      script: yarn release
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
