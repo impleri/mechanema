@@ -70,6 +70,6 @@ function getStateSelector(namespace, stateKey = wedge.KEY_STATE, initState = wed
 
 exports.bindStateToSelector = bindStateToSelector;
 exports.bindStateToSelectors = bindStateToSelectors;
-exports.getStateSelector = getStateSelector;
-exports.getSlice = getSlice;
 exports.createSelector = createSelector;
+exports.getSlice = getSlice;
+exports.getStateSelector = getStateSelector;

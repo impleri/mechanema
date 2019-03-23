@@ -49,11 +49,11 @@ function createReducer(onAction, stateFn) {
     };
 }
 
-exports.createRootReducer = createRootReducer;
-exports.registerReducer = registerReducer;
-exports.registerStateMachine = registerStateMachine;
-exports.createReducer = createReducer;
 exports.INIT = INIT;
 exports.KEY_STATE = KEY_STATE;
-exports.traverseReducerArray = traverseReducerArray;
+exports.createReducer = createReducer;
+exports.createRootReducer = createRootReducer;
 exports.createStateMachine = createStateMachine;
+exports.registerReducer = registerReducer;
+exports.registerStateMachine = registerStateMachine;
+exports.traverseReducerArray = traverseReducerArray;

@@ -20,7 +20,6 @@ function initiateEpic(epic) {
         while (true) {
             try {
                 yield call(epic);
-                break;
             }
             catch (error) {
                 console.error(error);

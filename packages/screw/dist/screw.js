@@ -62,4 +62,4 @@ function getStateSelector(namespace, stateKey = KEY_STATE, initState = INIT) {
     return createSelector(namespace, (sliceState) => sliceState.get(stateKey, initState));
 }
 
-export { bindStateToSelector, bindStateToSelectors, getStateSelector, getSlice, createSelector };
+export { bindStateToSelector, bindStateToSelectors, createSelector, getSlice, getStateSelector };
