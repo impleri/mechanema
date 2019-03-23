@@ -55,7 +55,6 @@ function initiateEpic(epic: IEpicFunction): void {
     while (true) {
       try {
         yield effects.call(epic);
-        break;
       } catch (error) {
         console.error(error);
       }

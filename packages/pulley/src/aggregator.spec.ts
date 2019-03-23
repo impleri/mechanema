@@ -77,4 +77,38 @@ describe('pulley', () => {
     expect(spawn).toHaveBeenCalledTimes(epics.length);
     expect(call).toHaveBeenCalledTimes(epics.length);
   });
+
+  it('restarts erroroneous epics', () => {
+    console.error = jest.fn();
+    const epic = createEpic();
+    epic.effect = faker.random.arrayElement([
+      'take',
+      'takeLatest',
+      'takeLeading',
+    ]);
+
+    const expectedEffect = (effects as any)[epic.effect];
+    let mockCount = 0;
+
+    (spawn as jest.Mock).mockImplementation(mockEpicImplementation);
+    (call as jest.Mock).mockImplementation(epic => {
+      if (mockCount === 0) {
+        mockCount++
+        throw new Error('Restart');
+      }
+      mockEpicImplementation(epic);
+    });
+
+    registerEpics(epic);
+
+    const rootEpic = createRootEpic();
+    const epicGenerator = rootEpic();
+    epicGenerator.next();
+    epicGenerator.next();
+
+    expect(spawn).toHaveBeenCalledTimes(1);
+    expect(call).toHaveBeenCalledTimes(2);
+    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(expectedEffect).toHaveBeenCalledTimes(1);
+  });
 });
