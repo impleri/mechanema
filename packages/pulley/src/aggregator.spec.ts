@@ -91,12 +91,12 @@ describe('pulley', () => {
     let mockCount = 0;
 
     (spawn as jest.Mock).mockImplementation(mockEpicImplementation);
-    (call as jest.Mock).mockImplementation(epic => {
+    (call as jest.Mock).mockImplementation((passedEpic) => {
       if (mockCount === 0) {
-        mockCount++
+        mockCount += 1;
         throw new Error('Restart');
       }
-      mockEpicImplementation(epic);
+      mockEpicImplementation(passedEpic);
     });
 
     registerEpics(epic);
