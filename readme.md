@@ -1,5 +1,8 @@
 # Mechanema
 
+[![Build Status](https://travis-ci.com/impleri/mechanema.svg?branch=master)](https://travis-ci.com/impleri/mechanema)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/5ff5e6cae5a38a8f63f7/test_coverage)](https://codeclimate.com/github/impleri/mechanema/test_coverage)
+
 "Give me a place to stand on, and I will move the Earth." -- Archimedes
 
 Mechanema are (simple) machines. In ancient Greece, it was believed that there
