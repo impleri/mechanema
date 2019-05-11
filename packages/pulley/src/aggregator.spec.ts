@@ -1,21 +1,23 @@
 import * as effects from 'redux-saga/effects';
 
 import {
-  IEpic,
-  IEpicFunction,
   createRootEpic,
   registerEpic,
   registerEpics,
   resetRegistry,
 } from './aggregator';
+import { simpleRoot } from './root-strategies';
+import { IEpic } from './types';
+import { genericWatcher } from './watcher-strategies';
 
 import faker = require('faker');
 
 jest.mock('redux-saga/effects');
+jest.mock('./root-strategies');
+jest.mock('./watcher-strategies');
+
 
 const {
-  call,
-  spawn,
   take,
   takeEvery,
   takeLatest,
@@ -24,8 +26,8 @@ const {
 
 const otherEffects = [take, takeEvery, takeLatest, takeLeading];
 
-describe('pulley', () => {
-  beforeEach(() => {
+describe('pulley aggregator', (): void => {
+  beforeEach((): void => {
     jest.resetAllMocks();
     resetRegistry();
   });
@@ -36,79 +38,50 @@ describe('pulley', () => {
     effect: faker.random.arrayElement(otherEffects),
   });
 
-  const mockEpicImplementation = (epic: IEpicFunction): IteratorResult<any> => epic().next();
+  const mockWatcher = (): jest.Mock => jest.fn();
+  const mockRoot = (callbacks: Function[]): Function[] => callbacks;
 
-  it('aggregates individual epic definitions', () => {
-    const epics = Array(faker.random.number(6)).fill('')
+  it('handles individual epics', (): void => {
+    const epics = Array(faker.random.number({ min: 2, max: 8 })).fill('')
       .map(createEpic);
 
-    (spawn as jest.Mock).mockImplementation(mockEpicImplementation);
-    (call as jest.Mock).mockImplementation(mockEpicImplementation);
+    (genericWatcher as jest.Mock).mockImplementation(mockWatcher);
+    (simpleRoot as jest.Mock).mockImplementation(mockRoot);
 
-    epics.forEach(epic => registerEpic(epic));
+    epics.forEach((epic): void => registerEpic(epic));
+    const callbacks = createRootEpic(simpleRoot, genericWatcher);
 
-    const rootEpic = createRootEpic();
-    rootEpic().next();
-
-    epics.forEach((epic) => {
-      expect(epic.effect).toHaveBeenCalledWith(epic.on, epic.call);
+    expect(genericWatcher).toHaveBeenCalledTimes(epics.length);
+    epics.forEach((epic, index): void => {
+      expect(genericWatcher).toHaveBeenNthCalledWith(index + 1, epic, index, epics);
     });
 
-    expect(spawn).toHaveBeenCalledTimes(epics.length);
-    expect(call).toHaveBeenCalledTimes(epics.length);
+    expect(simpleRoot).toHaveBeenCalledTimes(1);
+    (callbacks as any).forEach((callback: Function): void => {
+      expect(jest.isMockFunction(callback)).toBe(true);
+    });
   });
 
-  it('aggregates an array of epic definitions', () => {
-    const epics = Array(faker.random.number(6)).fill('')
+  it('handles an array of epics', (): void => {
+    const epics = Array(faker.random.number({ min: 2, max: 8 })).fill('')
       .map(createEpic);
 
-    (spawn as jest.Mock).mockImplementation(mockEpicImplementation);
-    (call as jest.Mock).mockImplementation(mockEpicImplementation);
+    (genericWatcher as jest.Mock).mockImplementation(mockWatcher);
+    (simpleRoot as jest.Mock).mockImplementation(mockRoot);
 
-    registerEpics(epics);
+    registerEpics(epics[0]);
+    registerEpics(epics.slice(1));
 
-    const rootEpic = createRootEpic();
-    rootEpic().next();
+    const callbacks = createRootEpic();
 
-    epics.forEach((epic) => {
-      expect(epic.effect).toHaveBeenCalledWith(epic.on, epic.call);
+    expect(genericWatcher).toHaveBeenCalledTimes(epics.length);
+    epics.forEach((epic, index): void => {
+      expect(genericWatcher).toHaveBeenNthCalledWith(index + 1, epic, index, epics);
     });
 
-    expect(spawn).toHaveBeenCalledTimes(epics.length);
-    expect(call).toHaveBeenCalledTimes(epics.length);
-  });
-
-  it('restarts erroroneous epics', () => {
-    console.error = jest.fn();
-    const epic = createEpic();
-    epic.effect = faker.random.arrayElement([
-      'take',
-      'takeLatest',
-      'takeLeading',
-    ]);
-
-    const expectedEffect = (effects as any)[epic.effect];
-    let mockCount = 0;
-
-    (spawn as jest.Mock).mockImplementation(mockEpicImplementation);
-    (call as jest.Mock).mockImplementation((passedEpic) => {
-      if (mockCount === 0) {
-        mockCount += 1;
-        throw new Error('Restart');
-      }
-      mockEpicImplementation(passedEpic);
+    expect(simpleRoot).toHaveBeenCalledTimes(1);
+    (callbacks as any).forEach((callback: Function): void => {
+      expect(jest.isMockFunction(callback)).toBe(true);
     });
-
-    registerEpics(epic);
-
-    const rootEpic = createRootEpic();
-    const epicGenerator = rootEpic();
-    epicGenerator.next();
-    epicGenerator.next();
-
-    expect(spawn).toHaveBeenCalledTimes(1);
-    expect(call).toHaveBeenCalledTimes(2);
-    expect(console.error).toHaveBeenCalledTimes(1);
-    expect(expectedEffect).toHaveBeenCalledTimes(1);
   });
 });

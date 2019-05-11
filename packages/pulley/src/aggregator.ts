@@ -1,14 +1,11 @@
-import * as effects from 'redux-saga/effects';
-
-export interface IEpic {
-  effect: Function | string;
-  on: string;
-  call: Function;
-}
-
-export interface IEpicFunction {
-  (): Iterator<void>;
-}
+import {
+  IEpic,
+  IEpicFunction,
+  IRootStrategy,
+  IWatcherStrategy,
+} from './types';
+import { genericWatcher } from './watcher-strategies';
+import { simpleRoot } from './root-strategies';
 
 /**
  * Internal registry to aggregate epics.
@@ -16,64 +13,20 @@ export interface IEpicFunction {
 const REGISTRY: IEpic[] | IEpic[] = [];
 
 /**
- * Default effect
- */
-const DEFAULT_EFFECT = 'takeEvery';
-
-/**
- * Map Epic To Function
- *
- * Map method for converting the basic epic definition to a generator function.
- * @param  {IEpic}    epic Epic definition
- * @return {IEpicFunction} Epic function
- */
-function mapEpicToFunction(epic: IEpic): IEpicFunction {
-  return function* epicWatcher(): Iterator<void> {
-    let callEffect: Function = effects[DEFAULT_EFFECT];
-
-    if (typeof epic.effect === 'string' && Object.keys(effects).includes(epic.effect)) {
-      callEffect = (effects as any)[epic.effect];
-    }
-
-    if (typeof epic.effect === 'function') {
-      callEffect = epic.effect;
-    }
-
-    yield callEffect(epic.on, epic.call);
-  };
-}
-
-/**
- * Initiate Epic
- *
- * A keepalive fork of the epic watcher so that all epics
- * continue to run.
- * @param {IEpicFunction} epic Epic Function
- */
-function initiateEpic(epic: IEpicFunction): void {
-  effects.spawn(function* spawnEpic() {
-    while (true) {
-      try {
-        yield effects.call(epic);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  });
-}
-
-/**
  * Create Root Epic
  *
  * Generates a root epic to initiate all registered epics.
+ * @param {IRootStrategy} rootStrategy Strategy for generating root epi.
+ * @param {IWatcherStrategy} watcherStrategy Strategy for generating watcher epics.
  * @return {IEpicFunction} Root epic function.
  */
-export function createRootEpic(): IEpicFunction {
-  const epicMethods = REGISTRY.map(mapEpicToFunction);
+export function createRootEpic(
+  rootStrategy: IRootStrategy = simpleRoot,
+  watcherStrategy: IWatcherStrategy = genericWatcher,
+): IEpicFunction {
+  const epicMethods = REGISTRY.map(watcherStrategy);
 
-  return function* rootEpic(): Iterator<void> {
-    yield* epicMethods.map(initiateEpic);
-  };
+  return rootStrategy(epicMethods);
 }
 
 /**

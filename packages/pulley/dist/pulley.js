@@ -1,9 +1,8 @@
 import * as effects from 'redux-saga/effects';
-import { spawn, call } from 'redux-saga/effects';
+import { call, spawn, all } from 'redux-saga/effects';
 
-const REGISTRY = [];
 const DEFAULT_EFFECT = 'takeEvery';
-function mapEpicToFunction(epic) {
+function genericWatcher(epic) {
     return function* epicWatcher() {
         let callEffect = effects[DEFAULT_EFFECT];
         if (typeof epic.effect === 'string' && Object.keys(effects).includes(epic.effect)) {
@@ -15,23 +14,41 @@ function mapEpicToFunction(epic) {
         yield callEffect(epic.on, epic.call);
     };
 }
-function initiateEpic(epic) {
-    spawn(function* spawnEpic() {
+
+function createEpicSpawn(epic) {
+    return function* spawnEpic() {
         while (true) {
             try {
                 yield call(epic);
+                break;
             }
             catch (error) {
                 console.error(error);
             }
         }
-    });
-}
-function createRootEpic() {
-    const epicMethods = REGISTRY.map(mapEpicToFunction);
-    return function* rootEpic() {
-        yield* epicMethods.map(initiateEpic);
     };
+}
+function spawnMapper(epic) {
+    return spawn(createEpicSpawn(epic));
+}
+function spawnRoot(epicMethods) {
+    return function* rootEpic() {
+        yield* epicMethods.map(spawnMapper);
+    };
+}
+function simpleMapper(epic) {
+    return epic();
+}
+function simpleRoot(epicMethods) {
+    return function* rootEpic() {
+        yield all(epicMethods.map(simpleMapper));
+    };
+}
+
+const REGISTRY = [];
+function createRootEpic(rootStrategy = simpleRoot, watcherStrategy = genericWatcher) {
+    const epicMethods = REGISTRY.map(watcherStrategy);
+    return rootStrategy(epicMethods);
 }
 function registerEpic(epic) {
     REGISTRY.push(epic);
@@ -45,4 +62,4 @@ function resetRegistry() {
     REGISTRY.length = 0;
 }
 
-export { createRootEpic, registerEpic, registerEpics, resetRegistry };
+export { createEpicSpawn, createRootEpic, genericWatcher, registerEpic, registerEpics, resetRegistry, simpleMapper, simpleRoot, spawnMapper, spawnRoot };

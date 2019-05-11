@@ -4,9 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var effects = require('redux-saga/effects');
 
-const REGISTRY = [];
 const DEFAULT_EFFECT = 'takeEvery';
-function mapEpicToFunction(epic) {
+function genericWatcher(epic) {
     return function* epicWatcher() {
         let callEffect = effects[DEFAULT_EFFECT];
         if (typeof epic.effect === 'string' && Object.keys(effects).includes(epic.effect)) {
@@ -18,23 +17,41 @@ function mapEpicToFunction(epic) {
         yield callEffect(epic.on, epic.call);
     };
 }
-function initiateEpic(epic) {
-    effects.spawn(function* spawnEpic() {
+
+function createEpicSpawn(epic) {
+    return function* spawnEpic() {
         while (true) {
             try {
                 yield effects.call(epic);
+                break;
             }
             catch (error) {
                 console.error(error);
             }
         }
-    });
-}
-function createRootEpic() {
-    const epicMethods = REGISTRY.map(mapEpicToFunction);
-    return function* rootEpic() {
-        yield* epicMethods.map(initiateEpic);
     };
+}
+function spawnMapper(epic) {
+    return effects.spawn(createEpicSpawn(epic));
+}
+function spawnRoot(epicMethods) {
+    return function* rootEpic() {
+        yield* epicMethods.map(spawnMapper);
+    };
+}
+function simpleMapper(epic) {
+    return epic();
+}
+function simpleRoot(epicMethods) {
+    return function* rootEpic() {
+        yield effects.all(epicMethods.map(simpleMapper));
+    };
+}
+
+const REGISTRY = [];
+function createRootEpic(rootStrategy = simpleRoot, watcherStrategy = genericWatcher) {
+    const epicMethods = REGISTRY.map(watcherStrategy);
+    return rootStrategy(epicMethods);
 }
 function registerEpic(epic) {
     REGISTRY.push(epic);
@@ -48,7 +65,13 @@ function resetRegistry() {
     REGISTRY.length = 0;
 }
 
+exports.createEpicSpawn = createEpicSpawn;
 exports.createRootEpic = createRootEpic;
+exports.genericWatcher = genericWatcher;
 exports.registerEpic = registerEpic;
 exports.registerEpics = registerEpics;
 exports.resetRegistry = resetRegistry;
+exports.simpleMapper = simpleMapper;
+exports.simpleRoot = simpleRoot;
+exports.spawnMapper = spawnMapper;
+exports.spawnRoot = spawnRoot;
