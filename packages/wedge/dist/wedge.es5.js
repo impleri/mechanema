@@ -2,19 +2,31 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var immutable = require('immutable');
 var reduxImmutable = require('redux-immutable');
+var immutable = require('immutable');
 
 const INIT = 'INIT';
 const KEY_STATE = 'machineState';
+const stateShape = {
+    [KEY_STATE]: INIT,
+};
+const stateFactory = immutable.Record(stateShape);
+const stateRecord = stateFactory();
 function traverseReducerArray(reducerArray) {
-    return (state, action) => reducerArray.reduce((newState, reducerSlice) => reducerSlice(newState, action), state);
+    return (state, action) => reducerArray.reduce((newState, reducerCallback) => reducerCallback(newState, action), state);
 }
-function createStateMachine(machineHash, initialState = immutable.Map(), initialMachineState = INIT, machineStateKey = KEY_STATE) {
-    return (state = initialState, action) => {
-        const currentState = state.get(machineStateKey, initialMachineState);
+function createStateMachine(machineHash, initialState, initialMachineState = INIT) {
+    let baseState = initialState || stateRecord;
+    if (initialMachineState !== INIT) {
+        const customState = {
+            machineState: initialMachineState,
+        };
+        baseState = stateFactory(customState);
+    }
+    return (state = baseState, action) => {
+        const currentState = state.get(KEY_STATE, initialMachineState);
         let reducerCallback = machineHash[initialMachineState];
-        if (currentState && Object.prototype.hasOwnProperty.call(machineHash, currentState)) {
+        if (currentState && machineHash[currentState]) {
             reducerCallback = machineHash[currentState];
         }
         if (Array.isArray(reducerCallback)) {
@@ -22,6 +34,12 @@ function createStateMachine(machineHash, initialState = immutable.Map(), initial
         }
         return reducerCallback(state, action);
     };
+}
+function changeStateTo(newState) {
+    return (state) => state.set(KEY_STATE, newState);
+}
+function changeState(state, newState) {
+    return changeStateTo(newState)(state);
 }
 
 const REGISTRY = {};
@@ -34,16 +52,20 @@ function registerReducer(namespace, reducerFn) {
     }
     REGISTRY[namespace] = reducerFn;
 }
-function registerStateMachine(namespace, machineDefinition, initialState = immutable.Map()) {
+function registerStateMachine(namespace, machineDefinition, initialState) {
     const stateMachine = createStateMachine(machineDefinition, initialState);
     registerReducer(namespace, stateMachine);
     return stateMachine;
 }
 
+function isPayloadAction(toBeDetermined) {
+    return (toBeDetermined.payload);
+}
 function createReducer(onAction, stateFn) {
     return (state, action) => {
         if (action && action.type === onAction) {
-            return stateFn(state, action.payload || action, action);
+            const payload = (isPayloadAction(action)) ? action.payload : action;
+            return stateFn(state, payload, action);
         }
         return state;
     };
@@ -51,9 +73,12 @@ function createReducer(onAction, stateFn) {
 
 exports.INIT = INIT;
 exports.KEY_STATE = KEY_STATE;
+exports.changeState = changeState;
+exports.changeStateTo = changeStateTo;
 exports.createReducer = createReducer;
 exports.createRootReducer = createRootReducer;
 exports.createStateMachine = createStateMachine;
 exports.registerReducer = registerReducer;
 exports.registerStateMachine = registerStateMachine;
+exports.stateShape = stateShape;
 exports.traverseReducerArray = traverseReducerArray;

@@ -1,6 +1,6 @@
-import { Map } from 'immutable';
+import { RecordOf } from 'immutable';
 import { Reducer } from 'redux';
-import { IStateMachineHash } from './state-machine';
+import { IStateMachine, IStateMachineHash } from './state-machine';
 export declare function createRootReducer(): Reducer;
 export declare function registerReducer(namespace: string, reducerFn: Reducer): void;
-export declare function registerStateMachine(namespace: string, machineDefinition: IStateMachineHash, initialState?: Map<{}, {}>): Reducer;
+export declare function registerStateMachine<S = IStateMachine>(namespace: string, machineDefinition: IStateMachineHash, initialState?: RecordOf<S>): Reducer;

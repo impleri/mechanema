@@ -1,9 +1,10 @@
-import { Map } from 'immutable';
 import { Action, Reducer } from 'redux';
-export interface IReducerSlice {
-    (state: Map<any, any>, payload: Action | any, action: Action): Map<any, any>;
+declare type IPayload = any;
+export interface IReducerSlice<S = any, A = any> {
+    (state: S | undefined, payload: Action<A> | IPayload, action: Action<A>): S;
 }
 export interface IPayloadAction extends Action {
-    payload?: any;
+    payload?: IPayload;
 }
-export declare function createReducer(onAction: string, stateFn: IReducerSlice): Reducer;
+export declare function createReducer<S = any, A extends Action<any> = IPayloadAction>(onAction: string | symbol, stateFn: IReducerSlice<S>): Reducer<S, A>;
+export {};

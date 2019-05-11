@@ -1,16 +1,21 @@
-import { Map } from 'immutable';
 import { Action, Reducer } from 'redux';
 
-export interface IReducerSlice {
+type IPayload = any;
+
+export interface IReducerSlice<S = any, A = any> {
   (
-    state: Map<any, any>,
-    payload: Action | any,
-    action: Action,
-  ): Map<any, any>;
+    state: S | undefined,
+    payload: Action<A> | IPayload,
+    action: Action<A>,
+  ): S;
 }
 
 export interface IPayloadAction extends Action {
-  payload?: any;
+  payload?: IPayload;
+}
+
+function isPayloadAction(toBeDetermined: Action): toBeDetermined is IPayloadAction {
+  return ((toBeDetermined as IPayloadAction).payload);
 }
 
 /**
@@ -23,15 +28,16 @@ export interface IPayloadAction extends Action {
  *                                            if received expected action.
  * @return {Reducer}                          Standard reducer function.
  */
-export function createReducer(
-  onAction: string,
-  stateFn: IReducerSlice,
-): Reducer {
-  return (state: Map<any, any>, action: IPayloadAction): Map<any, any> => {
+export function createReducer<S = any, A extends Action<any> = IPayloadAction>(
+  onAction: string | symbol,
+  stateFn: IReducerSlice<S>,
+): Reducer<S, A> {
+  return (state: S | undefined, action: A): S => {
     if (action && action.type === onAction) {
-      return stateFn(state, action.payload || action, action);
+      const payload = (isPayloadAction(action)) ? (action as IPayloadAction).payload : action;
+      return stateFn(state, payload, action);
     }
 
-    return state;
+    return state as S;
   };
 }

@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Collection } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
 import { createRootReducer, registerReducer, registerStateMachine } from './aggregator';
@@ -10,20 +9,20 @@ import faker = require('faker');
 jest.mock('redux-immutable');
 jest.mock('./state-machine');
 
-describe('aggregation functions', () => {
-  describe('createRootReducer', () => {
-    it('returns a root reducer method', () => {
+describe('aggregation functions', (): void => {
+  describe('createRootReducer', (): void => {
+    it('returns a root reducer method', (): void => {
       createRootReducer();
       expect(combineReducers).toHaveBeenCalledWith(expect.any(Object));
     });
   });
 
-  describe('registerReducer', () => {
-    it('adds a reducer method to the internal registry', () => {
+  describe('registerReducer', (): void => {
+    it('adds a reducer method to the internal registry', (): void => {
       const givenReducer = jest.fn();
       const givenNamespace = faker.random.word();
 
-      expect(() => {
+      expect((): void => {
         registerReducer(givenNamespace, givenReducer);
         createRootReducer();
       }).not.toThrow();
@@ -33,19 +32,19 @@ describe('aggregation functions', () => {
       });
     });
 
-    it('throws an error if trying overwrite an existing key', () => {
+    it('throws an error if trying overwrite an existing key', (): void => {
       const givenReducer = jest.fn();
       const givenNamespace = faker.random.word();
 
-      expect(() => {
+      expect((): void => {
         registerReducer(givenNamespace, givenReducer);
         registerReducer(givenNamespace, givenReducer);
       }).toThrow(/namespace/i);
     });
   });
 
-  describe('registerStateMachine', () => {
-    it('creates the state machine and adds it to the internal registry', () => {
+  describe('registerStateMachine', (): void => {
+    it('creates the state machine and adds it to the internal registry', (): void => {
       const givenMachineHash = {
         [faker.random.word()]: jest.fn(),
       };
@@ -55,12 +54,12 @@ describe('aggregation functions', () => {
 
       (createStateMachine as jest.Mock).mockImplementation(() => expectedReducer);
 
-      expect(() => {
+      expect((): void => {
         registerStateMachine(givenNamespace, givenMachineHash);
         createRootReducer();
       }).not.toThrow();
 
-      expect(createStateMachine).toHaveBeenCalledWith(givenMachineHash, expect.any(Collection));
+      expect(createStateMachine).toHaveBeenCalledWith(givenMachineHash, undefined);
       expect(combineReducers).toHaveBeenCalledWith(expect.objectContaining({
         [givenNamespace]: expectedReducer,
       }));

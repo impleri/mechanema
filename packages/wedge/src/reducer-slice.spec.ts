@@ -6,9 +6,9 @@ import { createReducer, IReducerSlice } from './reducer-slice';
 import faker = require('faker');
 
 
-describe('reducer slice functions', () => {
-  describe('createReducer', () => {
-    it('returns a reducer method', () => {
+describe('reducer slice functions', (): void => {
+  describe('createReducer', (): void => {
+    it('returns a reducer method', (): void => {
       const expectedAction = faker.hacker.noun();
       const callback = jest.fn();
 
@@ -16,8 +16,8 @@ describe('reducer slice functions', () => {
     });
   });
 
-  describe('createReducer reducer', () => {
-    it('does nothing on the wrong action', () => {
+  describe('createReducer reducer', (): void => {
+    it('does nothing on the wrong action', (): void => {
       const expectedAction = faker.hacker.noun();
       const callback = jest.fn();
       const reducerFn = createReducer(expectedAction, callback);
@@ -43,7 +43,7 @@ describe('reducer slice functions', () => {
       expect(reducerFn(givenState, givenAction)).toEqual(givenState);
     });
 
-    it('triggers the callback on the right action', () => {
+    it('triggers the callback on the right action', (): void => {
       const expectedAction = faker.hacker.noun();
 
       const listKey = faker.lorem.word();
@@ -82,7 +82,7 @@ describe('reducer slice functions', () => {
       expect(reducerFn(givenState, givenAction)).toEqual(expectedState);
     });
 
-    it('triggers the callback on the right action with the whole action', () => {
+    it('triggers the callback on the right action with the whole action', (): void => {
       const expectedAction = faker.hacker.noun();
 
       const listKey = faker.lorem.word();

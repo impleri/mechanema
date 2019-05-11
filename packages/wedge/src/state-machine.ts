@@ -1,4 +1,4 @@
-import { Collection, Map } from 'immutable';
+import { Record, RecordOf } from 'immutable';
 import { Action, Reducer } from 'redux';
 
 /**
@@ -9,12 +9,23 @@ export const INIT = 'INIT';
 /**
  * The predefined property key to use for tracking current state of the
  * reducer slice.
+ * @deprecated
  */
 export const KEY_STATE = 'machineState';
 
 export interface IStateMachineHash {
   [state: string]: Reducer | Reducer[];
 }
+
+export interface IStateMachine {
+  machineState: string | symbol;
+}
+
+export const stateShape: IStateMachine = {
+  [KEY_STATE]: INIT,
+};
+const stateFactory = Record(stateShape);
+const stateRecord: RecordOf<IStateMachine> = stateFactory();
 
 /**
  * Traverse Reducer Array
@@ -26,15 +37,11 @@ export interface IStateMachineHash {
  *                                      `./reducer-slide`).
  * @return {Reducer}       Standard reducer function.
  */
-export function traverseReducerArray(reducerArray: Reducer[]): Reducer {
-  return (
-    state: Collection<any, any>,
-    action: Action,
-  ): Collection<any, any> => reducerArray.reduce(
-    (
-      newState: Collection<any, any>,
-      reducerSlice: Reducer,
-    ): Collection<any, any> => reducerSlice(newState, action),
+export function traverseReducerArray<S = RecordOf<IStateMachine>>(
+  reducerArray: Reducer[],
+): Reducer {
+  return (state: S, action): S => reducerArray.reduce(
+    (newState: S, reducerCallback): S => reducerCallback(newState, action),
     state,
   );
 }
@@ -43,23 +50,30 @@ export function traverseReducerArray(reducerArray: Reducer[]): Reducer {
  * Create State Machine
  *
  * Translates a Hashmap of state-based reducer into a standard reducer function.
- * @param {object}     machineHash     Hashmap of (state => reducer).
- * @param {Collection} initialState    Defined initial state for the
+ * @param {object} machineHash         Hashmap of (state => reducer).
+ * @param {Record} initialState        Defined initial state for the
  *                                     reducer slice.
  * @param {string} initialMachineState Value for the initial/fallback state.
- * @param {string} machineStateKey     Key where the reducer slice's state is stored.
  */
-export function createStateMachine(
+export function createStateMachine<S = IStateMachine>(
   machineHash: IStateMachineHash,
-  initialState: Collection<any, any> = Map(),
+  initialState?: RecordOf<S>,
   initialMachineState: string = INIT,
-  machineStateKey: string = KEY_STATE,
-): Reducer {
-  return (state: Collection<any, any> = initialState, action: Action): Collection<any, any> => {
-    const currentState: string = state.get(machineStateKey, initialMachineState);
+): Reducer<RecordOf<S>> {
+  let baseState = initialState || stateRecord;
+
+  if (initialMachineState !== INIT) {
+    const customState = {
+      machineState: initialMachineState,
+    };
+    baseState = stateFactory(customState);
+  }
+
+  return (state = baseState as RecordOf<S>, action: Action): RecordOf<S> => {
+    const currentState = state.get(KEY_STATE, initialMachineState);
 
     let reducerCallback: Reducer | Reducer[] = machineHash[initialMachineState];
-    if (currentState && Object.prototype.hasOwnProperty.call(machineHash, currentState)) {
+    if (currentState && machineHash[currentState]) {
       reducerCallback = machineHash[currentState];
     }
 
@@ -69,4 +83,21 @@ export function createStateMachine(
 
     return reducerCallback(state, action);
   };
+}
+
+type IChangeState<S extends IStateMachine> = (state: RecordOf<S>) => RecordOf <S>;
+
+export function changeStateTo<S extends IStateMachine>(
+  newState: string | symbol,
+): IChangeState<S> {
+  return (
+    state: RecordOf<S>,
+  ): RecordOf<S> => state.set(KEY_STATE, newState);
+}
+
+export function changeState<S extends IStateMachine>(
+  state: RecordOf<S>,
+  newState: string | symbol,
+): RecordOf<S> {
+  return changeStateTo<S>(newState)(state);
 }

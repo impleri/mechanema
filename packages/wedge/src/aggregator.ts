@@ -1,8 +1,8 @@
-import { Map } from 'immutable';
+import { RecordOf } from 'immutable';
 import { Reducer } from 'redux';
 import { combineReducers } from 'redux-immutable';
 
-import { createStateMachine, IStateMachineHash } from './state-machine';
+import { createStateMachine, IStateMachine, IStateMachineHash } from './state-machine';
 
 interface IRegistry {
   [namespace: string]: Reducer;
@@ -45,16 +45,16 @@ export function registerReducer(namespace: string, reducerFn: Reducer): void {
  * Adds a state machine reducer to the registry at the specified namespace key.
  * @param {string}     namespace           Key to identify reducer slice for redux.
  * @param {object}     machineDefinition   State Machine definition to use.
- * @param {Collection} initialState        Defined initial state for the
+ * @param {RecordOf}   initialState        Defined initial state for the
  *                                         reducer slice.
  * @return {Reducer}  State machine Reducer function
  */
-export function registerStateMachine(
+export function registerStateMachine<S = IStateMachine>(
   namespace: string,
   machineDefinition: IStateMachineHash,
-  initialState = Map(),
+  initialState?: RecordOf<S>,
 ): Reducer {
-  const stateMachine = createStateMachine(machineDefinition, initialState);
+  const stateMachine = createStateMachine<S>(machineDefinition, initialState);
 
   registerReducer(namespace, stateMachine);
 
