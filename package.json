@@ -19,7 +19,7 @@
     "faker": "4.1.0",
     "immutable": "4.0.0-rc.12",
     "jest": "24.8.0",
-    "lerna": "3.14.0",
+    "lerna": "3.14.1",
     "moize": "5.4.4",
     "redux": "4.0.1",
     "redux-immutable": "4.0.0",
