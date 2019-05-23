@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Map } from 'immutable';
+import { Record, RecordOf } from 'immutable';
 
 import { createReducer, IReducerSlice } from './reducer-slice';
 
@@ -7,6 +7,16 @@ import faker = require('faker');
 
 
 describe('reducer slice functions', (): void => {
+  interface IStateMachine {
+    machineState: string | symbol;
+  }
+
+  const stateShape: IStateMachine = {
+    machineState: 'INIT',
+  };
+
+  const stateFactory = Record(stateShape);
+
   describe('createReducer', (): void => {
     it('returns a reducer method', (): void => {
       const expectedAction = faker.hacker.noun();
@@ -28,7 +38,7 @@ describe('reducer slice functions', (): void => {
           [faker.company.bsBuzz()]: faker.company.catchPhrase(),
         },
       };
-      const givenState = Map({
+      const givenState = stateFactory({
         [faker.lorem.word()]: [
           faker.lorem.sentence(),
           faker.lorem.sentence(),
@@ -59,13 +69,16 @@ describe('reducer slice functions', (): void => {
         },
       };
 
-      const callback: IReducerSlice = (state, payload): Map<any, any> => state.setIn(
+      const callback: IReducerSlice<IStateMachine> = (
+        state,
+        payload,
+      ): RecordOf<IStateMachine> => (state as RecordOf<IStateMachine>).setIn(
         [mapKey, newKey],
         payload[valueKey],
       );
       const reducerFn = createReducer(expectedAction, callback);
 
-      const givenState = Map({
+      const givenState = stateFactory({
         [listKey]: [
           faker.lorem.sentence(),
           faker.lorem.sentence(),
@@ -96,13 +109,16 @@ describe('reducer slice functions', (): void => {
         [valueKey]: value,
       };
 
-      const callback: IReducerSlice = (state, payload): Map<any, any> => state.setIn(
+      const callback: IReducerSlice<IStateMachine> = (
+        state,
+        payload,
+      ): RecordOf<IStateMachine> => (state as RecordOf<IStateMachine>).setIn(
         [mapKey, newKey],
         payload[valueKey],
       );
       const reducerFn = createReducer(expectedAction, callback);
 
-      const givenState = Map({
+      const givenState = stateFactory({
         [listKey]: [
           faker.lorem.sentence(),
           faker.lorem.sentence(),

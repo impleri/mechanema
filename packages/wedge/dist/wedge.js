@@ -67,4 +67,4 @@ function createReducer(onAction, stateFn) {
     };
 }
 
-export { INIT, KEY_STATE, changeState, changeStateTo, createReducer, createRootReducer, createStateMachine, registerReducer, registerStateMachine, stateShape, traverseReducerArray };
+export { INIT, KEY_STATE, changeState, changeStateTo, createReducer, createRootReducer, createStateMachine, registerReducer, registerStateMachine, stateFactory, stateShape, traverseReducerArray };

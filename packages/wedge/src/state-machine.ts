@@ -1,5 +1,5 @@
 import { Record, RecordOf } from 'immutable';
-import { Action, Reducer } from 'redux';
+import { Action, AnyAction, Reducer } from 'redux';
 
 /**
  * The predefined initial/fallback state
@@ -9,7 +9,6 @@ export const INIT = 'INIT';
 /**
  * The predefined property key to use for tracking current state of the
  * reducer slice.
- * @deprecated
  */
 export const KEY_STATE = 'machineState';
 
@@ -24,7 +23,8 @@ export interface IStateMachine {
 export const stateShape: IStateMachine = {
   [KEY_STATE]: INIT,
 };
-const stateFactory = Record(stateShape);
+
+export const stateFactory = Record(stateShape);
 const stateRecord: RecordOf<IStateMachine> = stateFactory();
 
 /**
@@ -32,34 +32,41 @@ const stateRecord: RecordOf<IStateMachine> = stateFactory();
  *
  * Iterates over an array of reducer slice methods to generate a single change
  * of state in redux store.
- * @param {Array<Reducer>} reducerArray Array of reducer methods (generally
- *                                      created via createReducer from
- *                                      `./reducer-slide`).
+ * @param {Array<Reducer>} reducerArray Array of reducer methods (see
+ *                                      `createReducer` in `./reducer-slide`).
  * @return {Reducer}       Standard reducer function.
  */
-export function traverseReducerArray<S = RecordOf<IStateMachine>>(
-  reducerArray: Reducer[],
-): Reducer {
-  return (state: S, action): S => reducerArray.reduce(
-    (newState: S, reducerCallback): S => reducerCallback(newState, action),
-    state,
-  );
+export function traverseReducerArray<S = IStateMachine, A extends Action = AnyAction>(
+  reducerArray: Reducer<RecordOf<S>, A>[],
+): Reducer<RecordOf<S>, A> {
+  return (
+    state: RecordOf<S> | undefined,
+    action: A,
+  ): RecordOf<S> => reducerArray.reduce((
+    newState: RecordOf<S>,
+    reducerCallback: Reducer<RecordOf<S>, A>,
+  ): RecordOf<S> => reducerCallback(
+    newState,
+    action,
+  ),
+  state as unknown as RecordOf<S>);
 }
 
 /**
  * Create State Machine
  *
  * Translates a Hashmap of state-based reducer into a standard reducer function.
- * @param {object} machineHash         Hashmap of (state => reducer).
- * @param {Record} initialState        Defined initial state for the
- *                                     reducer slice.
- * @param {string} initialMachineState Value for the initial/fallback state.
+ * @param {IStateMachineHash}   machineHash         Hashmap of (state => reducer).
+ * @param {RecordOf} initialState        Defined initial state for the
+ *                                       reducer slice.
+ * @param {string}   initialMachineState Value for the initial/fallback state.
+ * @return {Reducer} Standard reducer.
  */
-export function createStateMachine<S = IStateMachine>(
+export function createStateMachine<S = IStateMachine, A extends Action = AnyAction>(
   machineHash: IStateMachineHash,
   initialState?: RecordOf<S>,
   initialMachineState: string = INIT,
-): Reducer<RecordOf<S>> {
+): Reducer<RecordOf<S>, A> {
   let baseState = initialState || stateRecord;
 
   if (initialMachineState !== INIT) {
@@ -85,8 +92,15 @@ export function createStateMachine<S = IStateMachine>(
   };
 }
 
-type IChangeState<S extends IStateMachine> = (state: RecordOf<S>) => RecordOf <S>;
+type IChangeState<S extends IStateMachine> = (state: RecordOf<S>) => RecordOf<S>;
 
+/**
+ * Change State To
+ *
+ * Reducer factory for changing machine state.
+ * @param {string|symbol} newState Value to which to transition the machine state.
+ * @return {function}     Reducer function to change machine state.
+ */
 export function changeStateTo<S extends IStateMachine>(
   newState: string | symbol,
 ): IChangeState<S> {
@@ -95,6 +109,14 @@ export function changeStateTo<S extends IStateMachine>(
   ): RecordOf<S> => state.set(KEY_STATE, newState);
 }
 
+/**
+ * Change State
+ *
+ * Transition machine state immediately.
+ * @param {RecordOf}      state    Current state object.
+ * @param {string|symbol} newState Value to which to transition the machine state.
+ * @return {RecordOf}     New state object with changed machine state.
+ */
 export function changeState<S extends IStateMachine>(
   state: RecordOf<S>,
   newState: string | symbol,

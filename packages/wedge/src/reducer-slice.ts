@@ -1,17 +1,18 @@
+import { RecordOf } from 'immutable';
 import { Action, Reducer } from 'redux';
 
 type IPayload = any;
 
-export interface IReducerSlice<S = any, A = any> {
+export interface IReducerSlice<S = any, P = IPayload, A = any> {
   (
-    state: S | undefined,
-    payload: Action<A> | IPayload,
+    state: RecordOf<S> | undefined,
+    payload: Action<A> | P,
     action: Action<A>,
-  ): S;
+  ): RecordOf<S>;
 }
 
-export interface IPayloadAction extends Action {
-  payload?: IPayload;
+export interface IPayloadAction<T = any, P = IPayload> extends Action<T> {
+  payload?: P;
 }
 
 function isPayloadAction(toBeDetermined: Action): toBeDetermined is IPayloadAction {
@@ -31,13 +32,13 @@ function isPayloadAction(toBeDetermined: Action): toBeDetermined is IPayloadActi
 export function createReducer<S = any, A extends Action<any> = IPayloadAction>(
   onAction: string | symbol,
   stateFn: IReducerSlice<S>,
-): Reducer<S, A> {
-  return (state: S | undefined, action: A): S => {
+): Reducer<RecordOf<S>, A> {
+  return (state: RecordOf<S> | undefined, action: A): RecordOf<S> => {
     if (action && action.type === onAction) {
       const payload = (isPayloadAction(action)) ? (action as IPayloadAction).payload : action;
       return stateFn(state, payload, action);
     }
 
-    return state as S;
+    return state as RecordOf<S>;
   };
 }

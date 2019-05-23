@@ -80,5 +80,6 @@ exports.createRootReducer = createRootReducer;
 exports.createStateMachine = createStateMachine;
 exports.registerReducer = registerReducer;
 exports.registerStateMachine = registerStateMachine;
+exports.stateFactory = stateFactory;
 exports.stateShape = stateShape;
 exports.traverseReducerArray = traverseReducerArray;
