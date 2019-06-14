@@ -34,18 +34,24 @@ describe('state machine functions', (): void => {
 
   describe('traverseReducerArray', (): void => {
     it('returns an iterator for reducer slice methods', (): void => {
-      const listKey = faker.random.word();
-      const anotherKey = faker.random.word();
       const anotherValue = faker.random.number();
       const expectedAction = faker.hacker.verb();
       const newState = faker.hacker.noun();
 
-      const initialState = Map({
+      interface ITest extends IStateMachine {
+        list?: List<string>;
+        other?: number;
+      }
+
+      const stateShape: ITest = {
         [KEY_STATE]: INIT,
-        [listKey]: List([
-          faker.lorem.sentence(),
-        ]),
-      });
+      };
+
+      const stateFactory = Record(stateShape);
+
+      const initialState = stateFactory().set('list', List([
+        faker.lorem.sentence(),
+      ]));
 
       const firstAdditions = [
         faker.lorem.sentence(),
@@ -55,36 +61,36 @@ describe('state machine functions', (): void => {
 
       const expectedState = initialState.mergeDeep(fromJS({
         [KEY_STATE]: newState,
-        [listKey]: List(firstAdditions),
-        [anotherKey]: anotherValue,
+        list: List(firstAdditions),
+        other: anotherValue,
       }));
 
       const reducers: Reducer[] = [
         (state, action): void => {
           if (action.type === expectedAction) {
-            return state.mergeDeep(Map({
+            return state.mergeDeep({
               [KEY_STATE]: newState,
-              [listKey]: List(firstAdditions),
-            }));
+              list: List(firstAdditions),
+            });
           }
 
           return state;
         },
         (state, action): void => {
           if (action.type === faker.lorem.slug()) {
-            return state.merge(Map({
+            return state.merge({
               [KEY_STATE]: faker.random.words(),
-              [listKey]: List([]),
-            }));
+              list: List([]),
+            });
           }
 
           return state;
         },
         (state, action): void => {
           if (action.type === expectedAction) {
-            return state.merge(Map({
-              [anotherKey]: anotherValue,
-            }));
+            return state.merge({
+              other: anotherValue,
+            });
           }
 
           return state;
