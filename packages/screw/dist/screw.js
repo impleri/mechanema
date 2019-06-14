@@ -1,5 +1,4 @@
 import { KEY_STATE, INIT } from '@mechanema/wedge';
-import { Map } from 'immutable';
 import moize from 'moize';
 
 function bindStateToSelector(selector, state) {
@@ -10,7 +9,7 @@ function bindStateToSelectors(selectors, state) {
         return bindStateToSelector(selectors, state);
     }
     return Object.keys(selectors).reduce((aggregator, selectorKey) => {
-        const newAggregator = aggregator;
+        const newAggregator = Object.assign({}, aggregator);
         const selector = selectors[selectorKey];
         newAggregator[selectorKey] = selector;
         if (typeof selector === 'function') {
@@ -21,7 +20,7 @@ function bindStateToSelectors(selectors, state) {
 }
 
 function getSlice(namespace) {
-    return (state) => state.get(namespace, Map());
+    return (state) => state.get(namespace);
 }
 function createSimpleSelector(selectorFn) {
     if (typeof selectorFn === 'function') {
@@ -36,8 +35,8 @@ function createComplexSelector(dependencies, aggregateFn) {
     const memoizedDeps = dependencies.map(createSimpleSelector);
     const memoizedAggregate = moize(aggregateFn);
     return Object.assign((state) => {
-        const values = memoizedDeps.map(dependency => dependency(state));
-        return memoizedAggregate(...values);
+        const aggregatorParams = memoizedDeps.map((dependency, index) => dependency(state));
+        return memoizedAggregate(...aggregatorParams);
     }, {
         isMoized: true,
     });
@@ -45,7 +44,9 @@ function createComplexSelector(dependencies, aggregateFn) {
 function createSelector(mixedParam, selectorFn) {
     let selector = () => { };
     if (Array.isArray(mixedParam)) {
-        const aggregateFn = (typeof selectorFn === 'function') ? selectorFn : mixedParam.pop();
+        const aggregateFn = (typeof selectorFn === 'function')
+            ? selectorFn
+            : mixedParam.pop();
         const dependencies = mixedParam;
         selector = createComplexSelector(dependencies, aggregateFn);
     }
@@ -59,7 +60,8 @@ function createSelector(mixedParam, selectorFn) {
 }
 
 function getStateSelector(namespace, stateKey = KEY_STATE, initState = INIT) {
-    return createSelector(namespace, (sliceState) => sliceState.get(stateKey, initState));
+    const selectorFn = (sliceState) => sliceState.get(stateKey, initState);
+    return createSelector(namespace, selectorFn);
 }
 
 export { bindStateToSelector, bindStateToSelectors, createSelector, getSlice, getStateSelector };
