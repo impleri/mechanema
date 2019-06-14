@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import { Map, Record, RecordOf } from 'immutable';
 import moize from 'moize';
 
 import { createSelector, ISelector } from './selector';
@@ -9,16 +9,27 @@ jest.unmock('immutable');
 jest.mock('moize');
 jest.mock('@mechanema/wedge');
 
-beforeEach(() => {
+interface ITestState {
+  something: string;
+}
+
+const initialState: ITestState = {
+  something: 'something',
+};
+
+const testStateFactory = Record(initialState);
+const testState: RecordOf<ITestState> = testStateFactory();
+
+beforeEach((): void => {
   jest.clearAllMocks();
 
-  (moize as any).mockImplementation((given: Function) => given);
-  (moize.maxArgs as jest.Mock).mockImplementation(() => moize);
+  (moize as unknown as jest.Mock).mockImplementation((given: Function): Function => given);
+  (moize.maxArgs as jest.Mock).mockReturnValue(moize);
 });
 
-describe('createSelector', () => {
-  describe('simple without a namespace', () => {
-    it('returns a memoized selector', () => {
+describe('createSelector', (): void => {
+  describe('simple without a namespace', (): void => {
+    it('returns a memoized selector', (): void => {
       const givenSelectorFn = jest.fn();
 
       expect(createSelector(givenSelectorFn)).toEqual(givenSelectorFn);
@@ -26,7 +37,7 @@ describe('createSelector', () => {
       expect(moize.maxArgs).not.toHaveBeenCalled();
     });
 
-    it('does not memoize an already-memoized method', () => {
+    it('does not memoize an already-memoized method', (): void => {
       const givenSelectorFn = jest.fn();
       (givenSelectorFn as ISelector).isMoized = true;
 
@@ -35,24 +46,24 @@ describe('createSelector', () => {
       expect(moize.maxArgs).not.toHaveBeenCalled();
     });
 
-    it('returns a psuedo-selector for "constants"', () => {
+    it('returns a psuedo-selector for "constants"', (): void => {
       const givenSelectorFn = faker.random.word();
 
       const receivedSelector = createSelector(givenSelectorFn);
 
-      expect(receivedSelector(Map())).toEqual(givenSelectorFn);
+      expect(receivedSelector(testState)).toEqual(givenSelectorFn);
       expect(moize.maxArgs).toHaveBeenCalledWith(0);
       expect(moize).toHaveBeenCalled();
     });
   });
 
-  describe('single-array complex', () => {
-    it('creates a memoized selector', () => {
+  describe('single-array complex', (): void => {
+    it('creates a memoized selector', (): void => {
       const givenReturn = faker.random.word();
       const expectedReturn = faker.hacker.noun();
-      const givenDependency = jest.fn(() => givenReturn);
-      const givenSelectorFn = jest.fn(() => expectedReturn);
-      const givenState = Map();
+      const givenDependency = jest.fn().mockReturnValue(givenReturn);
+      const givenSelectorFn = jest.fn().mockReturnValue(expectedReturn);
+      const givenState = testState;
 
       const receivedSelector = createSelector([givenDependency, givenSelectorFn]);
       const receivedValue = receivedSelector(givenState);
@@ -67,13 +78,13 @@ describe('createSelector', () => {
     });
   });
 
-  describe('complex with pre-split aggregator', () => {
-    it('creates a memoized selector', () => {
+  describe('complex with pre-split aggregator', (): void => {
+    it('creates a memoized selector', (): void => {
       const givenReturn = faker.random.word();
       const expectedReturn = faker.hacker.noun();
-      const givenDependency = jest.fn(() => givenReturn);
-      const givenSelectorFn = jest.fn(() => expectedReturn);
-      const givenState = Map();
+      const givenDependency = jest.fn().mockReturnValue(givenReturn);
+      const givenSelectorFn = jest.fn().mockReturnValue(expectedReturn);
+      const givenState = testState;
 
       const receivedSelector = createSelector([givenDependency], givenSelectorFn);
       const receivedValue = receivedSelector(givenState);
@@ -89,14 +100,12 @@ describe('createSelector', () => {
   });
 
 
-  describe('simple with a namespace', () => {
-    it('creates a memoized selector with getSlice', () => {
+  describe('simple with a namespace', (): void => {
+    it('creates a memoized selector with getSlice', (): void => {
       const givenNamespace = faker.random.word();
       const givenReturn = faker.random.words();
-      const givenSelectorFn = jest.fn(() => givenReturn);
-      const givenSliceState = Map({
-        inSlice: true,
-      });
+      const givenSelectorFn = jest.fn().mockReturnValue(givenReturn);
+      const givenSliceState = testState;
       const givenState = Map({
         [givenNamespace]: givenSliceState,
       });

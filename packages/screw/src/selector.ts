@@ -1,27 +1,35 @@
-import { Collection, Map } from 'immutable';
+import { Collection } from 'immutable';
 import moize from 'moize';
 
-export interface ISelector {
-  (state: Collection<any, any>): any;
+export interface ISelector<Value = any, State = any> {
+  (state: State): Value;
   isMoized?: boolean;
 }
 
-export interface IConstant {
-  (): any;
+export interface IConstant<Value = string> {
+  (): Value;
   isMoized?: boolean;
 }
 
-export interface IAggregator {
-  (...parameters: any): any;
+export interface IAggregator<Value = any, Params = any> {
+  (...parameters: Partial<Params>[]): Value;
 }
 
-type selectorFnType = ISelector | IConstant
+type selectorFnType<Value = any, State = any> = ISelector<Value, State> | IConstant<Value>
 
-export function getSlice(namespace: string): ISelector {
-  return (state: Collection<any, any>): Map<any, any> => state.get(namespace, Map());
+/**
+ * Get Slice
+ * Return reducer slice from overall store.
+ * @param namespace Index name of reducer slice
+ * @return Reducer slice
+ */
+export function getSlice<State = any, NamespaceId = string | symbol>(
+  namespace: NamespaceId,
+): ISelector<State, Collection<NamespaceId, State>> {
+  return (state: Collection<NamespaceId, State>): State => state.get(namespace) as State;
 }
 
-function createSimpleSelector(selectorFn: selectorFnType): ISelector {
+function createSimpleSelector<Value = any, State = any>(selectorFn: selectorFnType<Value, State>): ISelector<Value, State> {
   if (typeof selectorFn === 'function') {
     // Already memoized
     if (selectorFn.isMoized) {
@@ -32,23 +40,25 @@ function createSimpleSelector(selectorFn: selectorFnType): ISelector {
   }
 
   // Convert non-function selectors into static functions
-  return moize.maxArgs(0)(() => selectorFn);
+  return moize.maxArgs(0)((): ISelector<Value, State> => selectorFn);
 }
 
-function createComplexSelector(
-  dependencies: selectorFnType[],
-  aggregateFn: IAggregator,
-): ISelector {
+function createComplexSelector<Value = any, State = any, Params = any[]>(
+  dependencies: selectorFnType<Params, State>[],
+  aggregateFn: IAggregator<Value, Params>,
+): ISelector<Value, State> {
   // memoize all the dependency selectors
   const memoizedDeps = dependencies.map(createSimpleSelector);
   const memoizedAggregate = moize(aggregateFn);
 
   // Fake memoization for complex selectors
   return Object.assign(
-    (state: Collection<any, any>): any => {
-      const values = memoizedDeps.map(dependency => dependency(state));
+    (state: State): Value => {
+      const aggregatorParams: Params[] = memoizedDeps.map(
+        (dependency, index): Params => dependency(state)
+      );
 
-      return memoizedAggregate(...values);
+      return memoizedAggregate(...aggregatorParams);
     },
     {
       isMoized: true,
@@ -56,27 +66,32 @@ function createComplexSelector(
   );
 }
 
-export function createSelector(
-  mixedParam: selectorFnType | selectorFnType[] | any,
-  selectorFn?: selectorFnType,
-): ISelector {
-  let selector: ISelector = (): any => {};
+export function createSelector<Value = any, State = any, Params = any>(
+  mixedParam: selectorFnType<Value, State> | selectorFnType<Value, State | Params>[] | string | symbol | keyof State,
+  selectorFn?: selectorFnType<Value, Params>,
+): ISelector<Value, State> {
+  let selector: ISelector = (): void => {};
 
   // Assume a complex selector if given an array
   if (Array.isArray(mixedParam)) {
-    const aggregateFn = (typeof selectorFn === 'function') ? selectorFn : mixedParam.pop();
-    const dependencies: selectorFnType[] = mixedParam;
+    const aggregateFn: IAggregator<Value, Params> = (typeof selectorFn === 'function')
+      ? selectorFn as IAggregator<Value, Params>
+      : mixedParam.pop() as IAggregator<Value, Params>;
+    const dependencies = mixedParam as unknown as selectorFnType<Params, State>[];
 
-    selector = createComplexSelector(
+    selector = createComplexSelector<Value, State, Params>(
       dependencies,
-      aggregateFn,
+      aggregateFn as IAggregator<Value>,
     );
   // If given two params, still a simple selector but on a slice
   } else if (typeof selectorFn === 'function' && typeof mixedParam === 'string') {
-    selector = createComplexSelector([getSlice(mixedParam)], selectorFn);
+    selector = createComplexSelector<Value, State, Params>(
+      [getSlice(mixedParam) as selectorFnType<Params, State>],
+      selectorFn as IAggregator<Value, Params>,
+    );
   // If given anything else, should be a simple selector
   } else {
-    selector = createSimpleSelector(mixedParam);
+    selector = createSimpleSelector<Value, State>(mixedParam as selectorFnType<Value, State>);
   }
 
   return selector;

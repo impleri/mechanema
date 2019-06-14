@@ -1,16 +1,16 @@
 import { Collection } from 'immutable';
-export interface ISelector {
-    (state: Collection<any, any>): any;
+export interface ISelector<Value = any, State = any> {
+    (state: State): Value;
     isMoized?: boolean;
 }
-export interface IConstant {
-    (): any;
+export interface IConstant<Value = string> {
+    (): Value;
     isMoized?: boolean;
 }
-export interface IAggregator {
-    (...parameters: any): any;
+export interface IAggregator<Value = any, Params = any> {
+    (...parameters: Partial<Params>[]): Value;
 }
-declare type selectorFnType = ISelector | IConstant;
-export declare function getSlice(namespace: string): ISelector;
-export declare function createSelector(mixedParam: selectorFnType | selectorFnType[] | any, selectorFn?: selectorFnType): ISelector;
+declare type selectorFnType<Value = any, State = any> = ISelector<Value, State> | IConstant<Value>;
+export declare function getSlice<State = any, NamespaceId = string | symbol>(namespace: NamespaceId): ISelector<State, Collection<NamespaceId, State>>;
+export declare function createSelector<Value = any, State = any, Params = any>(mixedParam: selectorFnType<Value, State> | selectorFnType<Value, State | Params>[] | string | symbol | keyof State, selectorFn?: selectorFnType<Value, Params>): ISelector<Value, State>;
 export {};
