@@ -24,7 +24,7 @@
     "redux": "4.0.1",
     "redux-immutable": "4.0.0",
     "redux-saga": "1.0.2",
-    "rollup": "1.12.5",
+    "rollup": "1.15.5",
     "rollup-plugin-typescript2": "0.21.1",
     "ts-jest": "24.0.2",
     "tslib": "1.10.0",
