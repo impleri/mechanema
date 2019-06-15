@@ -21,6 +21,7 @@
     "jest": "24.8.0",
     "lerna": "3.15.0",
     "moize": "5.4.4",
+    "nyr": "^1.1.0",
     "redux": "4.0.1",
     "redux-immutable": "4.0.0",
     "redux-saga": "1.0.2",
@@ -33,8 +34,8 @@
   "scripts": {
     "build": "lerna exec -- rollup -c ../../rollup.config.js",
     "lint": "eslint . --ext js,jsx,ts,tsx",
-    "pretest": "npm run lint",
-    "test": "npm run testonly",
+    "pretest": "nyr lint",
+    "test": "nyr testonly",
     "testonly": "jest",
     "release": "echo 'Should create a publish script here'"
   },
