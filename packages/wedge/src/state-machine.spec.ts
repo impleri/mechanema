@@ -1,8 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   fromJS,
   List,
-  Map,
   Record,
   RecordOf,
 } from 'immutable';

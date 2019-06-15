@@ -22,6 +22,7 @@
   },
   "rules": {
     "import/no-extraneous-dependencies": "warn",
+    "import/prefer-default-export": "off",
     "indent": "off",
     "@typescript-eslint/indent": [
       "error",
@@ -30,8 +31,15 @@
     "@typescript-eslint/interface-name-prefix": [
       "error",
       "always"
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": "off"
   },
+  "overrides": [{
+    "files": ["*.spec.ts", "*.spec.tsx"],
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": "off"
+    }
+  }],
   "settings": {
     "import/parsers": {
       "@typescript-eslint/parser": [

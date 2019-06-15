@@ -15,6 +15,7 @@ export function createEpicSpawn(epic: IEpicFunction): IEpicFunction<CallEffect> 
         yield call(epic);
         break;
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error);
       }
     }

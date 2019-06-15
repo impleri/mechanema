@@ -26,7 +26,7 @@ export function bindStateToSelectors<T extends IBoundSelectorHash, S extends Col
 
   return Object.keys(selectors).reduce(
     (aggregator: T, selectorKey: string): T => {
-      const newAggregator = {...aggregator};
+      const newAggregator = { ...aggregator };
       const selector = selectors[selectorKey];
 
       (newAggregator as IBoundSelectorHash)[selectorKey] = selector;

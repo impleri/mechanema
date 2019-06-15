@@ -29,7 +29,9 @@ export function getSlice<State = any, NamespaceId = string | symbol>(
   return (state: Collection<NamespaceId, State>): State => state.get(namespace) as State;
 }
 
-function createSimpleSelector<Value = any, State = any>(selectorFn: selectorFnType<Value, State>): ISelector<Value, State> {
+function createSimpleSelector<Value = any, State = any>(
+  selectorFn: selectorFnType<Value, State>,
+): ISelector<Value, State> {
   if (typeof selectorFn === 'function') {
     // Already memoized
     if (selectorFn.isMoized) {
@@ -55,7 +57,7 @@ function createComplexSelector<Value = any, State = any, Params = any[]>(
   return Object.assign(
     (state: State): Value => {
       const aggregatorParams: Params[] = memoizedDeps.map(
-        (dependency, index): Params => dependency(state)
+        (dependency): Params => dependency(state),
       );
 
       return memoizedAggregate(...aggregatorParams);
@@ -67,7 +69,12 @@ function createComplexSelector<Value = any, State = any, Params = any[]>(
 }
 
 export function createSelector<Value = any, State = any, Params = any>(
-  mixedParam: selectorFnType<Value, State> | selectorFnType<Value, State | Params>[] | string | symbol | keyof State,
+  mixedParam: selectorFnType<Value, State>
+  | selectorFnType<Value, State
+  | Params>[]
+  | string
+  | symbol
+  | keyof State,
   selectorFn?: selectorFnType<Value, Params>,
 ): ISelector<Value, State> {
   let selector: ISelector = (): void => {};
