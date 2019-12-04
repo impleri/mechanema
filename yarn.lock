@@ -5085,11 +5085,6 @@ nwsapi@^2.0.7:
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.0.tgz#204879a9e3d068ff2a55139c2c772780681a38b7"
   integrity sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ==
 
-nyr@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/nyr/-/nyr-1.1.0.tgz#94bda0368628baf36f51b0ec0209ad63d2f1249d"
-  integrity sha1-lL2gNoYouvNvUbDsAgmtY9LxJJ0=
-
 oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
