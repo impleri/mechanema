@@ -1,7 +1,6 @@
+import * as faker from 'faker';
 import { Map } from 'immutable';
 import { bindStateToSelector, bindStateToSelectors, IBoundSelectorHash } from './bind-selectors';
-
-import faker = require('faker');
 
 function createSelectorConfig(): any {
   const value = faker.lorem.paragraphs();

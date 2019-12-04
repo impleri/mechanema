@@ -1,3 +1,4 @@
+import * as faker from 'faker';
 import {
   fromJS,
   List,
@@ -15,8 +16,6 @@ import {
   IStateMachineHash,
   traverseReducerArray,
 } from './state-machine';
-
-import faker = require('faker');
 
 describe('state machine functions', (): void => {
   beforeEach((): void => {

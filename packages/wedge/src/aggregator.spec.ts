@@ -1,10 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+import * as faker from 'faker';
 import { combineReducers } from 'redux-immutable';
 
 import { createRootReducer, registerReducer, registerStateMachine } from './aggregator';
 import { createStateMachine } from './state-machine';
-
-import faker = require('faker');
 
 jest.mock('redux-immutable');
 jest.mock('./state-machine');

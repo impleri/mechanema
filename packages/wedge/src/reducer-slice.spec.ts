@@ -1,10 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+import * as faker from 'faker';
 import { Record, RecordOf } from 'immutable';
 
 import { createReducer, IReducerSlice } from './reducer-slice';
-
-import faker = require('faker');
-
 
 describe('reducer slice functions', (): void => {
   interface IStateMachine {

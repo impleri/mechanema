@@ -1,3 +1,4 @@
+import * as faker from 'faker';
 import {
   all,
   call,
@@ -12,8 +13,6 @@ import {
   spawnRoot,
 } from './root-strategies';
 import { IEpicFunction } from './types';
-
-import faker = require('faker');
 
 jest.mock('redux-saga/effects');
 

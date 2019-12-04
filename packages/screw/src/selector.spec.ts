@@ -1,9 +1,8 @@
+import * as faker from 'faker';
 import { Map, Record, RecordOf } from 'immutable';
 import moize from 'moize';
 
 import { createSelector, ISelector } from './selector';
-
-import faker = require('faker');
 
 jest.unmock('immutable');
 jest.mock('moize');

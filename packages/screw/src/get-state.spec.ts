@@ -1,9 +1,8 @@
+import * as faker from 'faker';
 import { INIT, KEY_STATE } from '@mechanema/wedge';
+
 import { getStateSelector } from './get-state';
-
 import { createSelector } from './selector';
-
-import faker = require('faker');
 
 jest.unmock('immutable');
 jest.mock('./selector');

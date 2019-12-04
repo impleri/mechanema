@@ -1,3 +1,4 @@
+import * as faker from 'faker';
 import * as effects from 'redux-saga/effects';
 
 import {
@@ -9,8 +10,6 @@ import {
 import { simpleRoot } from './root-strategies';
 import { IEpic } from './types';
 import { genericWatcher } from './watcher-strategies';
-
-import faker = require('faker');
 
 jest.mock('redux-saga/effects');
 jest.mock('./root-strategies');
