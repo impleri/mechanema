@@ -75,20 +75,20 @@ export function createSelector<Value = any, State = any, Params = any>(
   | string
   | symbol
   | keyof State,
-  selectorFn?: selectorFnType<Value, Params>,
+  selectorFn?: selectorFnType<Value, Params> | IAggregator<Value>,
 ): ISelector<Value, State> {
   let selector: ISelector = (): void => undefined;
 
   // Assume a complex selector if given an array
   if (Array.isArray(mixedParam)) {
     const aggregateFn: IAggregator<Value> = (typeof selectorFn === 'function')
-      ? selectorFn as IAggregator<Value>
+      ? selectorFn
       : mixedParam.pop() as IAggregator<Value>;
     const dependencies = mixedParam as unknown as selectorFnType<Params, State>[];
 
     selector = createComplexSelector<Value, State, Params>(
       dependencies,
-      aggregateFn as IAggregator<Value>,
+      aggregateFn,
     );
   // If given two params, still a simple selector but on a slice
   } else if (typeof selectorFn === 'function' && typeof mixedParam === 'string') {
