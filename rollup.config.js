@@ -7,7 +7,7 @@ const pkg = require(path.join(packageRootDir, 'package.json'));
 
 const overrides = {
   compilerOptions: {
-    declarationDir: path.join(packageRootDir, '..'),
+    declarationDir: path.join(packageRootDir, 'src'),
   },
   include: [
     path.join(packageRootDir, 'src')
