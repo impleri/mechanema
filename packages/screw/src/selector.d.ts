@@ -7,8 +7,8 @@ export interface IConstant<Value = string> {
     (): Value;
     isMoized?: boolean;
 }
-export interface IAggregator<Value = any, Params = any> {
-    (...parameters: Partial<Params>[]): Value;
+export interface IAggregator<Value = any> {
+    (...parameters: any[]): Value;
 }
 declare type selectorFnType<Value = any, State = any> = ISelector<Value, State> | IConstant<Value>;
 export declare function getSlice<State = any, NamespaceId = string | symbol>(namespace: NamespaceId): ISelector<State, Collection<NamespaceId, State>>;

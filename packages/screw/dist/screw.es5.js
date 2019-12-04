@@ -48,7 +48,7 @@ function createComplexSelector(dependencies, aggregateFn) {
     });
 }
 function createSelector(mixedParam, selectorFn) {
-    let selector = () => { };
+    let selector = () => undefined;
     if (Array.isArray(mixedParam)) {
         const aggregateFn = (typeof selectorFn === 'function')
             ? selectorFn

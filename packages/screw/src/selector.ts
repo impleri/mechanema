@@ -11,8 +11,8 @@ export interface IConstant<Value = string> {
   isMoized?: boolean;
 }
 
-export interface IAggregator<Value = any, Params = any> {
-  (...parameters: Partial<Params>[]): Value;
+export interface IAggregator<Value = any> {
+  (...parameters: any[]): Value;
 }
 
 type selectorFnType<Value = any, State = any> = ISelector<Value, State> | IConstant<Value>
@@ -47,7 +47,7 @@ function createSimpleSelector<Value = any, State = any>(
 
 function createComplexSelector<Value = any, State = any, Params = any[]>(
   dependencies: selectorFnType<Params, State>[],
-  aggregateFn: IAggregator<Value, Params>,
+  aggregateFn: IAggregator<Value>,
 ): ISelector<Value, State> {
   // memoize all the dependency selectors
   const memoizedDeps = dependencies.map(createSimpleSelector);
@@ -81,9 +81,9 @@ export function createSelector<Value = any, State = any, Params = any>(
 
   // Assume a complex selector if given an array
   if (Array.isArray(mixedParam)) {
-    const aggregateFn: IAggregator<Value, Params> = (typeof selectorFn === 'function')
-      ? selectorFn as IAggregator<Value, Params>
-      : mixedParam.pop() as IAggregator<Value, Params>;
+    const aggregateFn: IAggregator<Value> = (typeof selectorFn === 'function')
+      ? selectorFn as IAggregator<Value>
+      : mixedParam.pop() as IAggregator<Value>;
     const dependencies = mixedParam as unknown as selectorFnType<Params, State>[];
 
     selector = createComplexSelector<Value, State, Params>(
@@ -94,7 +94,7 @@ export function createSelector<Value = any, State = any, Params = any>(
   } else if (typeof selectorFn === 'function' && typeof mixedParam === 'string') {
     selector = createComplexSelector<Value, State, Params>(
       [getSlice(mixedParam) as selectorFnType<Params, State>],
-      selectorFn as IAggregator<Value, Params>,
+      selectorFn as IAggregator<Value>,
     );
   // If given anything else, should be a simple selector
   } else {
