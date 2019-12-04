@@ -1,6 +1,6 @@
 {
   "name": "@mechanema/pulley",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "Lift the heavy objects out of basic actions for a Redux store.",
   "author": "Christopher Roussel <christopher@impleri.net>",
   "homepage": "https://github.com/impleri/mechanema",

@@ -1,6 +1,6 @@
 {
   "name": "@mechanema/wedge",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "Separate two or more slices of a Redux store.",
   "author": "Christopher Roussel <christopher@impleri.net>",
   "homepage": "https://github.com/impleri/mechanema",
