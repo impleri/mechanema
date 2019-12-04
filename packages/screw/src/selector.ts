@@ -77,7 +77,7 @@ export function createSelector<Value = any, State = any, Params = any>(
   | keyof State,
   selectorFn?: selectorFnType<Value, Params>,
 ): ISelector<Value, State> {
-  let selector: ISelector = (): void => {};
+  let selector: ISelector = (): void => undefined;
 
   // Assume a complex selector if given an array
   if (Array.isArray(mixedParam)) {

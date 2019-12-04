@@ -19,10 +19,6 @@
     "strict": true
   },
   "include": [
-    "src",
-    "packages"
-  ],
-  "exclude": [
-    "**/*.spec.ts"
+    "packages/*/src"
   ]
 }

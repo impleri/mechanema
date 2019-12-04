@@ -41,7 +41,7 @@ function createComplexSelector(dependencies, aggregateFn) {
     const memoizedDeps = dependencies.map(createSimpleSelector);
     const memoizedAggregate = moize(aggregateFn);
     return Object.assign((state) => {
-        const aggregatorParams = memoizedDeps.map((dependency, index) => dependency(state));
+        const aggregatorParams = memoizedDeps.map((dependency) => dependency(state));
         return memoizedAggregate(...aggregatorParams);
     }, {
         isMoized: true,

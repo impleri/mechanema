@@ -132,13 +132,13 @@ describe('state machine functions', (): void => {
       };
 
       testHash = {
-        [INIT]: jest.fn(state => state),
+        [INIT]: jest.fn((state) => state),
       };
     });
 
     it('returns the default state if none provided', (): void => {
       const otherState = faker.random.word();
-      testHash[otherState] = jest.fn(state => state);
+      testHash[otherState] = jest.fn((state) => state);
 
       const reducer = createStateMachine<ITestState>(testHash);
 
@@ -151,7 +151,7 @@ describe('state machine functions', (): void => {
 
     it('returns the given initial state if none provided', (): void => {
       const otherState = faker.random.word();
-      testHash[otherState] = jest.fn(state => state);
+      testHash[otherState] = jest.fn((state) => state);
 
       const reducer = createStateMachine<ITestState>(testHash, initialState);
 
@@ -195,7 +195,7 @@ describe('state machine functions', (): void => {
     it('uses the reducer method associated with the current state', (): void => {
       const expectedState = faker.hacker.noun();
       givenState = changeState(givenState, expectedState);
-      testHash[expectedState] = jest.fn(state => state);
+      testHash[expectedState] = jest.fn((state) => state);
 
       const reducer = createStateMachine<ITestState>(testHash);
 
@@ -209,7 +209,7 @@ describe('state machine functions', (): void => {
       const expectedState = faker.hacker.noun();
       givenState = givenState.set(KEY_STATE, expectedState);
 
-      const expectedCallback = jest.fn(state => state);
+      const expectedCallback = jest.fn((state) => state);
       testHash[expectedState] = [expectedCallback];
 
       const reducer = createStateMachine<ITestState>(testHash);
