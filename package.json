@@ -7,7 +7,7 @@
   "author": "Christopher Roussel <christopher@impleri.net>",
   "license": "MIT",
   "devDependencies": {
-    "@types/faker": "4.1.8",
+    "@types/faker": "4.1.9",
     "@types/jest": "24.0.23",
     "@types/redux-immutable": "4.0.1",
     "@typescript-eslint/eslint-plugin": "2.10.0",
