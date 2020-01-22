@@ -22,7 +22,7 @@
     "jest": "24.9.0",
     "lerna": "3.20.2",
     "moize": "5.4.5",
-    "redux": "4.0.4",
+    "redux": "4.0.5",
     "redux-immutable": "4.0.0",
     "redux-saga": "1.1.3",
     "rollup": "1.29.0",
