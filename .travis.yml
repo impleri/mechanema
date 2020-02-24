@@ -4,8 +4,8 @@ branches:
   - master
 node_js:
   - node
+  - "12"
   - "10"
-  - "8"
 stages:
   - build
   - test
