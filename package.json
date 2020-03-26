@@ -19,7 +19,7 @@
     "eslint-plugin-jest": "23.8.2",
     "faker": "4.1.0",
     "immutable": "4.0.0-rc.12",
-    "jest": "25.1.0",
+    "jest": "25.2.1",
     "lerna": "3.20.2",
     "moize": "5.4.5",
     "redux": "4.0.5",
