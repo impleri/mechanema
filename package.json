@@ -17,7 +17,7 @@
     "eslint-import-resolver-typescript": "2.2.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jest": "23.20.0",
-    "faker": "4.1.0",
+    "faker": "5.0.0",
     "immutable": "4.0.0-rc.12",
     "jest": "25.5.4",
     "lerna": "3.22.1",
