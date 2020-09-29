@@ -12,7 +12,7 @@
     "@types/redux-immutable": "4.0.1",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
-    "eslint": "7.6.0",
+    "eslint": "7.10.0",
     "eslint-config-airbnb-base": "14.1.0",
     "eslint-import-resolver-typescript": "2.2.0",
     "eslint-plugin-import": "2.22.0",
