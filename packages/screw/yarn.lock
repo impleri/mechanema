@@ -2,22 +2,17 @@
 # yarn lockfile v1
 
 
-fast-equals@^1.6.0:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/fast-equals/-/fast-equals-1.6.1.tgz#66cc5a0922ea747599f41aedf44a76ec2908adc0"
+fast-equals@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/fast-equals/-/fast-equals-2.0.0.tgz#bef2c423af3939f2c54310df54c57e64cd2adefc"
 
-fast-stringify@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/fast-stringify/-/fast-stringify-1.1.0.tgz#6caf0af2456296adac9d0c9c6f0522d18297f57a"
+micro-memoize@4.0.9:
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/micro-memoize/-/micro-memoize-4.0.9.tgz#b44a38c9dffbee1cefc2fd139bc8947952268b62"
 
-micro-memoize@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/micro-memoize/-/micro-memoize-2.1.1.tgz#5092f1ef475546b28f8da0e11f061850d5549ae4"
-
-moize@^5.4.4:
-  version "5.4.7"
-  resolved "https://registry.yarnpkg.com/moize/-/moize-5.4.7.tgz#bffa28806441d9f5cf1c4158b67a29413c438e83"
+moize@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/moize/-/moize-6.0.1.tgz#5e1cd820fb156e90b83e411e0e22b3bbbccea474"
   dependencies:
-    fast-equals "^1.6.0"
-    fast-stringify "^1.1.0"
-    micro-memoize "^2.1.1"
+    fast-equals "2.0.0"
+    micro-memoize "4.0.9"
